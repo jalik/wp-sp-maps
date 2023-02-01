@@ -227,6 +227,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var ol_style__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ol/style */ "./node_modules/ol/style/Fill.js");
 /* harmony import */ var ol_style__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ol/style */ "./node_modules/ol/style/Text.js");
 /* harmony import */ var ol_style__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ol/style */ "./node_modules/ol/style/Style.js");
+/* harmony import */ var ol_style__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ol/style */ "./node_modules/ol/style/Stroke.js");
 
 
 
@@ -330,13 +331,27 @@ function createStyle(feature, resolution) {
     text: createText(feature, resolution, {
       offsetY: icon.getRadius() * -2.5
     })
+  }), new ol_style__WEBPACK_IMPORTED_MODULE_11__["default"]({
+    fill: new ol_style__WEBPACK_IMPORTED_MODULE_9__["default"]({
+      color: 'rgba(255,255,255,0.5)'
+    }),
+    stroke: new ol_style__WEBPACK_IMPORTED_MODULE_12__["default"]({
+      color: 'orange',
+      width: 2
+    })
   })];
 }
 function zoomToContent(layer, view) {
   const source = layer.getSource();
   const features = source.getFeatures();
   if (features.length > 1) {
-    view.fit(source.getExtent());
+    const opts = {
+      padding: [100, 100, 100, 100]
+    };
+    view.fit(source.getExtent(), opts);
+    setTimeout(() => {
+      view.fit(source.getExtent(), opts);
+    }, 100);
   } else if (features.length > 0) {
     const [feature] = features;
     view.setCenter(feature.getGeometry().getCoordinates());

@@ -13,6 +13,7 @@ import {
 import {
   Fill,
   RegularShape,
+  Stroke,
   Style,
   Text,
 } from 'ol/style';
@@ -104,6 +105,15 @@ export function createStyle(feature, resolution) {
     new Style({
       text: createText(feature, resolution, { offsetY: icon.getRadius() * -2.5 }),
     }),
+    new Style({
+      fill: new Fill({
+        color: 'rgba(255,255,255,0.5)',
+      }),
+      stroke: new Stroke({
+        color: 'orange',
+        width: 2,
+      }),
+    }),
   ];
 }
 
@@ -112,7 +122,11 @@ export function zoomToContent(layer, view) {
   const features = source.getFeatures();
 
   if (features.length > 1) {
-    view.fit(source.getExtent());
+    const opts = { padding: [100, 100, 100, 100] };
+    view.fit(source.getExtent(), opts);
+    setTimeout(() => {
+      view.fit(source.getExtent(), opts);
+    }, 100);
   } else if (features.length > 0) {
     const [feature] = features;
     view.setCenter(feature.getGeometry().getCoordinates());
