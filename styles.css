@@ -1,0 +1,34 @@
+.spmaps-map-metabox {
+  display: flex;
+  width: 100%;
+}
+
+.spmaps-map-metabox > :first-child {
+  width: 20%;
+}
+
+.spmaps-map-metabox > :last-child {
+  width: 80%;
+}
+
+.spmaps-map-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.spmaps-map {
+  width: 100%;
+  height: 100%;
+  background: lightblue;
+}
+
+.spmaps-map-features {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 10;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+}

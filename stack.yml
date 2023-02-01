@@ -1,0 +1,45 @@
+version: '3.1'
+
+services:
+
+  wordpress:
+    image: wordpress
+    restart: always
+    depends_on:
+      - mysql
+    ports:
+      - '8080:80'
+    environment:
+      WP_DEBUG: 1
+      WORDPRESS_DEBUG: 1
+      WORDPRESS_DB_HOST: mysql
+      WORDPRESS_DB_USER: dev
+      WORDPRESS_DB_PASSWORD: dev
+      WORDPRESS_DB_NAME: wordpress
+    volumes:
+      - wordpress:/var/www/html
+      - ./:/var/www/html/wp-content/plugins/sp-maps
+    networks:
+      wordpress:
+
+  mysql:
+    image: mysql:5.7
+    restart: always
+    ports:
+      - '13306:3306'
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: dev
+      MYSQL_PASSWORD: dev
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+    volumes:
+      - db:/var/lib/mysql
+    networks:
+      wordpress:
+
+volumes:
+  wordpress:
+  db:
+
+networks:
+  wordpress:
