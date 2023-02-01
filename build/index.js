@@ -173,9 +173,22 @@ function MapView(props) {
         }
       }
     };
+    const pointerMoveListener = event => {
+      const {
+        pixel
+      } = event;
+      const features = map.getFeaturesAtPixel(pixel);
+      if (features.length > 0) {
+        map.getTargetElement().style.cursor = 'pointer';
+      } else {
+        map.getTargetElement().style.cursor = null;
+      }
+    };
     map.on('singleclick', clickListener);
+    map.on('pointermove', pointerMoveListener);
     return () => {
       map.un('singleclick', clickListener);
+      map.un('pointermove', pointerMoveListener);
     };
   }, [map]);
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
