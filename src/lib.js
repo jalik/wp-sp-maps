@@ -13,7 +13,6 @@ import {
 import {
   Fill,
   RegularShape,
-  Stroke,
   Style,
   Text,
 } from 'ol/style';
@@ -69,8 +68,17 @@ export function createVectorLayer(features, options) {
     source: new Vector({
       features: features.filter((el) => el != null),
     }),
-    // declutter: true,
-    style: createStyle,
+    style: createDefaultStyle,
+    zIndex: 1,
+  });
+}
+
+export function createHighlightLayer(features, options) {
+  return new VectorLayer({
+    ...options,
+    source: new Vector({ features }),
+    style: createHighlightStyle,
+    zIndex: 1000,
   });
 }
 
@@ -96,24 +104,24 @@ export function createText(feature, resolution, options = {}) {
   });
 }
 
-export function createStyle(feature, resolution) {
-  const icon = createIcon(feature, resolution);
+export function createDefaultStyle(feature, resolution) {
+  const image = createIcon(feature, resolution);
+  const text = createText(feature, resolution, { offsetY: image.getRadius() * -2.5 });
   return [
-    new Style({
-      image: icon,
-    }),
-    new Style({
-      text: createText(feature, resolution, { offsetY: icon.getRadius() * -2.5 }),
-    }),
-    new Style({
-      fill: new Fill({
-        color: 'rgba(255,255,255,0.5)',
-      }),
-      stroke: new Stroke({
-        color: 'orange',
-        width: 2,
-      }),
-    }),
+    new Style({ image }),
+    new Style({ text }),
+  ];
+}
+
+export function createHighlightStyle(feature, resolution) {
+  const image = createIcon(feature, resolution);
+  const text = createText(feature, resolution, { offsetY: image.getRadius() * -2.5 });
+  const fill = new Fill({ color: 'black' });
+  image.setFill(fill);
+  text.setFill(fill);
+  return [
+    new Style({ image }),
+    new Style({ text }),
   ];
 }
 

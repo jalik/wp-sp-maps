@@ -5,6 +5,7 @@ import {
 } from 'react';
 import {
   createFeatureFromPost,
+  createHighlightLayer,
   createMap,
   createVectorLayer,
   zoomToContent,
@@ -23,6 +24,17 @@ function MapView(props) {
     const features = posts.map(createFeatureFromPost);
     return createVectorLayer(features);
   }, [map, posts]);
+
+  const highlightLayer = useMemo(() => {
+    return createHighlightLayer([]);
+  }, []);
+
+  useEffect(() => {
+    map.addLayer(highlightLayer);
+    return () => {
+      map.removeLayer(highlightLayer);
+    };
+  }, [map, highlightLayer]);
 
   useEffect(() => {
     map.addLayer(layer);
@@ -53,13 +65,17 @@ function MapView(props) {
     const pointerMoveListener = (event) => {
       const { pixel } = event;
 
-      const features = map.getFeaturesAtPixel(pixel);
+      // const features = map.getFeaturesAtPixel(pixel);
+      layer.getFeatures(pixel).then((features)=>{
+        highlightLayer.getSource().clear();
+        highlightLayer.getSource().addFeatures(features);
 
-      if (features.length > 0) {
-        map.getTargetElement().style.cursor = 'pointer';
-      } else {
-        map.getTargetElement().style.cursor = null;
-      }
+        if (features.length > 0) {
+          map.getTargetElement().style.cursor = 'pointer';
+        } else {
+          map.getTargetElement().style.cursor = null;
+        }
+      });
     };
 
     map.on('singleclick', clickListener);
@@ -69,7 +85,7 @@ function MapView(props) {
       map.un('singleclick', clickListener);
       map.un('pointermove', pointerMoveListener);
     };
-  }, [map]);
+  }, [map, highlightLayer]);
 
   return (
     <div

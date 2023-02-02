@@ -150,6 +150,15 @@ function MapView(props) {
     const features = posts.map(_lib__WEBPACK_IMPORTED_MODULE_2__.createFeatureFromPost);
     return (0,_lib__WEBPACK_IMPORTED_MODULE_2__.createVectorLayer)(features);
   }, [map, posts]);
+  const highlightLayer = (0,react__WEBPACK_IMPORTED_MODULE_1__.useMemo)(() => {
+    return (0,_lib__WEBPACK_IMPORTED_MODULE_2__.createHighlightLayer)([]);
+  }, []);
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    map.addLayer(highlightLayer);
+    return () => {
+      map.removeLayer(highlightLayer);
+    };
+  }, [map, highlightLayer]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     map.addLayer(layer);
     (0,_lib__WEBPACK_IMPORTED_MODULE_2__.zoomToContent)(layer, view);
@@ -177,12 +186,17 @@ function MapView(props) {
       const {
         pixel
       } = event;
-      const features = map.getFeaturesAtPixel(pixel);
-      if (features.length > 0) {
-        map.getTargetElement().style.cursor = 'pointer';
-      } else {
-        map.getTargetElement().style.cursor = null;
-      }
+
+      // const features = map.getFeaturesAtPixel(pixel);
+      layer.getFeatures(pixel).then(features => {
+        highlightLayer.getSource().clear();
+        highlightLayer.getSource().addFeatures(features);
+        if (features.length > 0) {
+          map.getTargetElement().style.cursor = 'pointer';
+        } else {
+          map.getTargetElement().style.cursor = null;
+        }
+      });
     };
     map.on('singleclick', clickListener);
     map.on('pointermove', pointerMoveListener);
@@ -190,7 +204,7 @@ function MapView(props) {
       map.un('singleclick', clickListener);
       map.un('pointermove', pointerMoveListener);
     };
-  }, [map]);
+  }, [map, highlightLayer]);
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     ref: divRef,
     id: 'map',
@@ -218,10 +232,12 @@ function MapView(props) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "createDefaultStyle": () => (/* binding */ createDefaultStyle),
 /* harmony export */   "createFeatureFromPost": () => (/* binding */ createFeatureFromPost),
+/* harmony export */   "createHighlightLayer": () => (/* binding */ createHighlightLayer),
+/* harmony export */   "createHighlightStyle": () => (/* binding */ createHighlightStyle),
 /* harmony export */   "createIcon": () => (/* binding */ createIcon),
 /* harmony export */   "createMap": () => (/* binding */ createMap),
-/* harmony export */   "createStyle": () => (/* binding */ createStyle),
 /* harmony export */   "createText": () => (/* binding */ createText),
 /* harmony export */   "createVectorLayer": () => (/* binding */ createVectorLayer),
 /* harmony export */   "getLonLatFromPost": () => (/* binding */ getLonLatFromPost),
@@ -240,7 +256,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var ol_style__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ol/style */ "./node_modules/ol/style/Fill.js");
 /* harmony import */ var ol_style__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ol/style */ "./node_modules/ol/style/Text.js");
 /* harmony import */ var ol_style__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ol/style */ "./node_modules/ol/style/Style.js");
-/* harmony import */ var ol_style__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ol/style */ "./node_modules/ol/style/Stroke.js");
 
 
 
@@ -307,8 +322,18 @@ function createVectorLayer(features, options) {
     source: new ol_source__WEBPACK_IMPORTED_MODULE_7__["default"]({
       features: features.filter(el => el != null)
     }),
-    // declutter: true,
-    style: createStyle
+    style: createDefaultStyle,
+    zIndex: 1
+  });
+}
+function createHighlightLayer(features, options) {
+  return new ol_layer_Vector__WEBPACK_IMPORTED_MODULE_6__["default"]({
+    ...options,
+    source: new ol_source__WEBPACK_IMPORTED_MODULE_7__["default"]({
+      features
+    }),
+    style: createHighlightStyle,
+    zIndex: 1000
   });
 }
 function createIcon(feature, resolution) {
@@ -336,22 +361,31 @@ function createText(feature, resolution) {
     ...options
   });
 }
-function createStyle(feature, resolution) {
-  const icon = createIcon(feature, resolution);
+function createDefaultStyle(feature, resolution) {
+  const image = createIcon(feature, resolution);
+  const text = createText(feature, resolution, {
+    offsetY: image.getRadius() * -2.5
+  });
   return [new ol_style__WEBPACK_IMPORTED_MODULE_11__["default"]({
-    image: icon
+    image
   }), new ol_style__WEBPACK_IMPORTED_MODULE_11__["default"]({
-    text: createText(feature, resolution, {
-      offsetY: icon.getRadius() * -2.5
-    })
+    text
+  })];
+}
+function createHighlightStyle(feature, resolution) {
+  const image = createIcon(feature, resolution);
+  const text = createText(feature, resolution, {
+    offsetY: image.getRadius() * -2.5
+  });
+  const fill = new ol_style__WEBPACK_IMPORTED_MODULE_9__["default"]({
+    color: 'black'
+  });
+  image.setFill(fill);
+  text.setFill(fill);
+  return [new ol_style__WEBPACK_IMPORTED_MODULE_11__["default"]({
+    image
   }), new ol_style__WEBPACK_IMPORTED_MODULE_11__["default"]({
-    fill: new ol_style__WEBPACK_IMPORTED_MODULE_9__["default"]({
-      color: 'rgba(255,255,255,0.5)'
-    }),
-    stroke: new ol_style__WEBPACK_IMPORTED_MODULE_12__["default"]({
-      color: 'orange',
-      width: 2
-    })
+    text
   })];
 }
 function zoomToContent(layer, view) {
