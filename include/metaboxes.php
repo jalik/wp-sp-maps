@@ -42,11 +42,11 @@ function spmaps_metabox($post)
       'label' => __('Zoom', 'spmaps'),
       'value' => get_post_meta($post->ID, 'zoom', true)
     ),
-    'icon_color' => array(
-      'id' => 'meta_icon_color',
-      'label' => __('Couleur de l\'icône', 'spmaps'),
-      'value' => get_post_meta($post->ID, 'icon_color', true)
-    ),
+//    'icon_color' => array(
+//      'id' => 'meta_icon_color',
+//      'label' => __('Couleur de l\'icône', 'spmaps'),
+//      'value' => get_post_meta($post->ID, 'icon_color', true)
+//    ),
   );
 
   spmaps_enqueue_styles();

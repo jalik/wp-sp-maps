@@ -248,6 +248,7 @@ function MapView(props) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "calculateIconTextOffset": () => (/* binding */ calculateIconTextOffset),
 /* harmony export */   "createDefaultStyle": () => (/* binding */ createDefaultStyle),
 /* harmony export */   "createFeatureFromPost": () => (/* binding */ createFeatureFromPost),
 /* harmony export */   "createHighlightLayer": () => (/* binding */ createHighlightLayer),
@@ -274,10 +275,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var ol_interaction__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ol/interaction */ "./node_modules/ol/interaction/defaults.js");
 /* harmony import */ var ol_layer_Vector__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ol/layer/Vector */ "./node_modules/ol/layer/Vector.js");
 /* harmony import */ var ol_source__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ol/source */ "./node_modules/ol/source/Vector.js");
-/* harmony import */ var ol_style__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ol/style */ "./node_modules/ol/style/RegularShape.js");
+/* harmony import */ var ol_style__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ol/style */ "./node_modules/ol/style/Circle.js");
 /* harmony import */ var ol_style__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ol/style */ "./node_modules/ol/style/Fill.js");
-/* harmony import */ var ol_style__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ol/style */ "./node_modules/ol/style/Text.js");
-/* harmony import */ var ol_style__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ol/style */ "./node_modules/ol/style/Style.js");
+/* harmony import */ var ol_style__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ol/style */ "./node_modules/ol/style/Stroke.js");
+/* harmony import */ var ol_style__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ol/style */ "./node_modules/ol/style/Text.js");
+/* harmony import */ var ol_style__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ol/style */ "./node_modules/ol/style/Style.js");
 
 
 
@@ -328,7 +330,7 @@ function getIconColorFromPost(post) {
 }
 function getIconColor(props) {
   let defaultValue = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;
-  return getIconColorFromPost(props) || defaultValue || 'red';
+  return getIconColorFromPost(props) || defaultValue || 'gold';
 }
 function createMap() {
   let options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -380,54 +382,62 @@ function createHighlightLayer(features, options) {
   });
 }
 function createIcon(feature, resolution) {
-  const radius = 10;
+  const radius = 6;
   return new ol_style__WEBPACK_IMPORTED_MODULE_12__["default"]({
     fill: new ol_style__WEBPACK_IMPORTED_MODULE_13__["default"]({
       color: getIconColor(feature.getProperties())
     }),
     radius,
-    points: 3,
-    angle: 45,
-    displacement: [0, radius]
+    stroke: new ol_style__WEBPACK_IMPORTED_MODULE_14__["default"]({
+      color: 'rgba(0,0,0,0.3)',
+      width: 1
+    })
   });
 }
 function createText(feature, resolution) {
   let options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-  return new ol_style__WEBPACK_IMPORTED_MODULE_14__["default"]({
+  return new ol_style__WEBPACK_IMPORTED_MODULE_15__["default"]({
     fill: new ol_style__WEBPACK_IMPORTED_MODULE_13__["default"]({
       color: getIconColor(feature.getProperties())
     }),
     text: feature.get('label'),
-    font: '14px sans-serif',
+    font: 'bold 14px sans-serif',
     // overflow: true,
     offsetY: -10,
+    stroke: new ol_style__WEBPACK_IMPORTED_MODULE_14__["default"]({
+      color: 'rgba(0,0,0,0.3)',
+      width: 1
+    }),
     ...options
   });
+}
+function calculateIconTextOffset(image) {
+  return image.getRadius() * -1 - 12;
 }
 function createDefaultStyle(feature, resolution) {
   const image = createIcon(feature, resolution);
   const text = createText(feature, resolution, {
-    offsetY: image.getRadius() * -2.5
+    offsetY: calculateIconTextOffset(image)
   });
-  return [new ol_style__WEBPACK_IMPORTED_MODULE_15__["default"]({
+  return [new ol_style__WEBPACK_IMPORTED_MODULE_16__["default"]({
     image
-  }), new ol_style__WEBPACK_IMPORTED_MODULE_15__["default"]({
+  }), new ol_style__WEBPACK_IMPORTED_MODULE_16__["default"]({
     text
   })];
 }
 function createHighlightStyle(feature, resolution) {
   const image = createIcon(feature, resolution);
   const text = createText(feature, resolution, {
-    offsetY: image.getRadius() * -2.5
+    offsetY: calculateIconTextOffset(image)
   });
   const fill = new ol_style__WEBPACK_IMPORTED_MODULE_13__["default"]({
-    color: 'black'
+    color: 'white'
   });
   image.setFill(fill);
   text.setFill(fill);
-  return [new ol_style__WEBPACK_IMPORTED_MODULE_15__["default"]({
+  return [new ol_style__WEBPACK_IMPORTED_MODULE_16__["default"]({
     image
-  }), new ol_style__WEBPACK_IMPORTED_MODULE_15__["default"]({
+  }), new ol_style__WEBPACK_IMPORTED_MODULE_16__["default"]({
     text
   })];
 }

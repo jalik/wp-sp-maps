@@ -15,8 +15,9 @@ import { defaults } from 'ol/interaction';
 import VectorLayer from 'ol/layer/Vector';
 import { Vector } from 'ol/source';
 import {
+  Circle,
   Fill,
-  RegularShape,
+  Stroke,
   Style,
   Text,
 } from 'ol/style';
@@ -45,7 +46,7 @@ export function getIconColorFromPost(post) {
 }
 
 export function getIconColor(props, defaultValue = undefined) {
-  return getIconColorFromPost(props) || defaultValue || 'red';
+  return getIconColorFromPost(props) || defaultValue || 'gold';
 }
 
 export function createMap(options = {}) {
@@ -105,13 +106,14 @@ export function createHighlightLayer(features, options) {
 }
 
 export function createIcon(feature, resolution) {
-  const radius = 10;
-  return new RegularShape({
+  const radius = 6;
+  return new Circle({
     fill: new Fill({ color: getIconColor(feature.getProperties()) }),
     radius,
-    points: 3,
-    angle: 45,
-    displacement: [0, radius],
+    stroke: new Stroke({
+      color: 'rgba(0,0,0,0.3)',
+      width: 1,
+    }),
   });
 }
 
@@ -119,16 +121,24 @@ export function createText(feature, resolution, options = {}) {
   return new Text({
     fill: new Fill({ color: getIconColor(feature.getProperties()) }),
     text: feature.get('label'),
-    font: '14px sans-serif',
+    font: 'bold 14px sans-serif',
     // overflow: true,
     offsetY: -10,
+    stroke: new Stroke({
+      color: 'rgba(0,0,0,0.3)',
+      width: 1,
+    }),
     ...options,
   });
 }
 
+export function calculateIconTextOffset(image) {
+  return (image.getRadius() * -1) - 12;
+}
+
 export function createDefaultStyle(feature, resolution) {
   const image = createIcon(feature, resolution);
-  const text = createText(feature, resolution, { offsetY: image.getRadius() * -2.5 });
+  const text = createText(feature, resolution, { offsetY: calculateIconTextOffset(image) });
   return [
     new Style({ image }),
     new Style({ text }),
@@ -137,8 +147,8 @@ export function createDefaultStyle(feature, resolution) {
 
 export function createHighlightStyle(feature, resolution) {
   const image = createIcon(feature, resolution);
-  const text = createText(feature, resolution, { offsetY: image.getRadius() * -2.5 });
-  const fill = new Fill({ color: 'black' });
+  const text = createText(feature, resolution, { offsetY: calculateIconTextOffset(image) });
+  const fill = new Fill({ color: 'white' });
   image.setFill(fill);
   text.setFill(fill);
   return [
