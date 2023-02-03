@@ -4,7 +4,7 @@
 Plugin Name: Maps
 Plugin URI:
 Description: Display posts on a map.
-Version: 1.0.0
+Version: 1.0.1
 Author: SIGMA POLYNESIA (Karl STEIN)
 Author URI: https://www.sigmapolynesia.com
 License: MIT
