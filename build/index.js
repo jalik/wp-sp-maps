@@ -43,6 +43,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./lib */ "./src/lib.js");
+/* harmony import */ var _tefenua__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./tefenua */ "./src/tefenua.js");
+
+
 
 
 
@@ -65,6 +68,13 @@ function MapSelect(props) {
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     map.addLayer(layer);
     (0,_lib__WEBPACK_IMPORTED_MODULE_2__.zoomToContent)(layer, view);
+    (0,_tefenua__WEBPACK_IMPORTED_MODULE_3__.createTeFenuaLayer)({
+      layer: 'TEFENUA:FOND',
+      matrixSet: 'EPSG:4326'
+    }).then(el => {
+      map.addLayer(el);
+      return el;
+    });
     return () => {
       map.removeLayer(layer);
     };
@@ -132,6 +142,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./lib */ "./src/lib.js");
 /* harmony import */ var _MapFeature__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./MapFeature */ "./src/MapFeature.js");
+/* harmony import */ var _tefenua__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./tefenua */ "./src/tefenua.js");
+
 
 
 
@@ -162,6 +174,13 @@ function MapView(props) {
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     map.addLayer(layer);
     (0,_lib__WEBPACK_IMPORTED_MODULE_2__.zoomToContent)(layer, view);
+    (0,_tefenua__WEBPACK_IMPORTED_MODULE_4__.createTeFenuaLayer)({
+      layer: 'TEFENUA:FOND',
+      matrixSet: 'EPSG:4326'
+    }).then(el => {
+      map.addLayer(el);
+      return el;
+    });
     return () => {
       map.removeLayer(layer);
     };
@@ -186,8 +205,6 @@ function MapView(props) {
       const {
         pixel
       } = event;
-
-      // const features = map.getFeaturesAtPixel(pixel);
       layer.getFeatures(pixel).then(features => {
         highlightLayer.getSource().clear();
         highlightLayer.getSource().addFeatures(features);
@@ -245,18 +262,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "zoomToContent": () => (/* binding */ zoomToContent)
 /* harmony export */ });
 /* harmony import */ var ol__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ol */ "./node_modules/ol/Map.js");
-/* harmony import */ var ol__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ol */ "./node_modules/ol/View.js");
-/* harmony import */ var ol__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ol */ "./node_modules/ol/Feature.js");
-/* harmony import */ var ol_geom__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ol/geom */ "./node_modules/ol/geom/Point.js");
-/* harmony import */ var ol_layer_Tile__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ol/layer/Tile */ "./node_modules/ol/layer/Tile.js");
-/* harmony import */ var ol_layer_Vector__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ol/layer/Vector */ "./node_modules/ol/layer/Vector.js");
-/* harmony import */ var ol_source__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ol/source */ "./node_modules/ol/source/OSM.js");
-/* harmony import */ var ol_source__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ol/source */ "./node_modules/ol/source/Vector.js");
-/* harmony import */ var ol_style__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ol/style */ "./node_modules/ol/style/RegularShape.js");
-/* harmony import */ var ol_style__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ol/style */ "./node_modules/ol/style/Fill.js");
-/* harmony import */ var ol_style__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ol/style */ "./node_modules/ol/style/Text.js");
-/* harmony import */ var ol_style__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ol/style */ "./node_modules/ol/style/Style.js");
-
+/* harmony import */ var ol__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ol */ "./node_modules/ol/View.js");
+/* harmony import */ var ol__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ol */ "./node_modules/ol/Feature.js");
+/* harmony import */ var ol_geom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ol/geom */ "./node_modules/ol/geom/Point.js");
+/* harmony import */ var ol_layer_Vector__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ol/layer/Vector */ "./node_modules/ol/layer/Vector.js");
+/* harmony import */ var ol_source__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ol/source */ "./node_modules/ol/source/Vector.js");
+/* harmony import */ var ol_style__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ol/style */ "./node_modules/ol/style/RegularShape.js");
+/* harmony import */ var ol_style__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ol/style */ "./node_modules/ol/style/Fill.js");
+/* harmony import */ var ol_style__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ol/style */ "./node_modules/ol/style/Text.js");
+/* harmony import */ var ol_style__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ol/style */ "./node_modules/ol/style/Style.js");
 
 
 
@@ -294,10 +308,8 @@ function getZoomFromPost(post) {
 function createMap() {
   let options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   return new ol__WEBPACK_IMPORTED_MODULE_0__["default"]({
-    layers: [new ol_layer_Tile__WEBPACK_IMPORTED_MODULE_1__["default"]({
-      source: new ol_source__WEBPACK_IMPORTED_MODULE_2__["default"]()
-    })],
-    view: new ol__WEBPACK_IMPORTED_MODULE_3__["default"]({
+    layers: [],
+    view: new ol__WEBPACK_IMPORTED_MODULE_1__["default"]({
       projection: 'EPSG:4326',
       center: [0, 0],
       zoom: 3
@@ -307,8 +319,8 @@ function createMap() {
 }
 function createFeatureFromPost(post) {
   const lonLat = getLonLatFromPost(post);
-  return new ol__WEBPACK_IMPORTED_MODULE_4__["default"]({
-    geometry: new ol_geom__WEBPACK_IMPORTED_MODULE_5__["default"](lonLat),
+  return new ol__WEBPACK_IMPORTED_MODULE_2__["default"]({
+    geometry: new ol_geom__WEBPACK_IMPORTED_MODULE_3__["default"](lonLat),
     label: post.post_title,
     guid: post.guid,
     slug: post.post_name,
@@ -317,9 +329,9 @@ function createFeatureFromPost(post) {
   });
 }
 function createVectorLayer(features, options) {
-  return new ol_layer_Vector__WEBPACK_IMPORTED_MODULE_6__["default"]({
+  return new ol_layer_Vector__WEBPACK_IMPORTED_MODULE_4__["default"]({
     ...options,
-    source: new ol_source__WEBPACK_IMPORTED_MODULE_7__["default"]({
+    source: new ol_source__WEBPACK_IMPORTED_MODULE_5__["default"]({
       features: features.filter(el => el != null)
     }),
     style: createDefaultStyle,
@@ -327,9 +339,9 @@ function createVectorLayer(features, options) {
   });
 }
 function createHighlightLayer(features, options) {
-  return new ol_layer_Vector__WEBPACK_IMPORTED_MODULE_6__["default"]({
+  return new ol_layer_Vector__WEBPACK_IMPORTED_MODULE_4__["default"]({
     ...options,
-    source: new ol_source__WEBPACK_IMPORTED_MODULE_7__["default"]({
+    source: new ol_source__WEBPACK_IMPORTED_MODULE_5__["default"]({
       features
     }),
     style: createHighlightStyle,
@@ -338,8 +350,8 @@ function createHighlightLayer(features, options) {
 }
 function createIcon(feature, resolution) {
   const radius = 10;
-  return new ol_style__WEBPACK_IMPORTED_MODULE_8__["default"]({
-    fill: new ol_style__WEBPACK_IMPORTED_MODULE_9__["default"]({
+  return new ol_style__WEBPACK_IMPORTED_MODULE_6__["default"]({
+    fill: new ol_style__WEBPACK_IMPORTED_MODULE_7__["default"]({
       color: 'red'
     }),
     radius,
@@ -350,8 +362,8 @@ function createIcon(feature, resolution) {
 }
 function createText(feature, resolution) {
   let options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-  return new ol_style__WEBPACK_IMPORTED_MODULE_10__["default"]({
-    fill: new ol_style__WEBPACK_IMPORTED_MODULE_9__["default"]({
+  return new ol_style__WEBPACK_IMPORTED_MODULE_8__["default"]({
+    fill: new ol_style__WEBPACK_IMPORTED_MODULE_7__["default"]({
       color: 'red'
     }),
     text: feature.get('label'),
@@ -366,9 +378,9 @@ function createDefaultStyle(feature, resolution) {
   const text = createText(feature, resolution, {
     offsetY: image.getRadius() * -2.5
   });
-  return [new ol_style__WEBPACK_IMPORTED_MODULE_11__["default"]({
+  return [new ol_style__WEBPACK_IMPORTED_MODULE_9__["default"]({
     image
-  }), new ol_style__WEBPACK_IMPORTED_MODULE_11__["default"]({
+  }), new ol_style__WEBPACK_IMPORTED_MODULE_9__["default"]({
     text
   })];
 }
@@ -377,14 +389,14 @@ function createHighlightStyle(feature, resolution) {
   const text = createText(feature, resolution, {
     offsetY: image.getRadius() * -2.5
   });
-  const fill = new ol_style__WEBPACK_IMPORTED_MODULE_9__["default"]({
+  const fill = new ol_style__WEBPACK_IMPORTED_MODULE_7__["default"]({
     color: 'black'
   });
   image.setFill(fill);
   text.setFill(fill);
-  return [new ol_style__WEBPACK_IMPORTED_MODULE_11__["default"]({
+  return [new ol_style__WEBPACK_IMPORTED_MODULE_9__["default"]({
     image
-  }), new ol_style__WEBPACK_IMPORTED_MODULE_11__["default"]({
+  }), new ol_style__WEBPACK_IMPORTED_MODULE_9__["default"]({
     text
   })];
 }
@@ -405,6 +417,64 @@ function zoomToContent(layer, view) {
     view.setZoom(feature.getProperties().zoom || 0);
   }
 }
+
+/***/ }),
+
+/***/ "./src/tefenua.js":
+/*!************************!*\
+  !*** ./src/tefenua.js ***!
+  \************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "TEFENUA_WMTS_URL": () => (/* binding */ TEFENUA_WMTS_URL),
+/* harmony export */   "createTeFenuaLayer": () => (/* binding */ createTeFenuaLayer),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   "getOptionsFromCapabilities": () => (/* binding */ getOptionsFromCapabilities)
+/* harmony export */ });
+/* harmony import */ var ol_format__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ol/format */ "./node_modules/ol/format/WMTSCapabilities.js");
+/* harmony import */ var ol_layer_Tile__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ol/layer/Tile */ "./node_modules/ol/layer/Tile.js");
+/* harmony import */ var ol_source_WMTS__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ol/source/WMTS */ "./node_modules/ol/source/WMTS.js");
+
+
+
+
+const TEFENUA_WMTS_URL = 'https://www.tefenua.gov.pf/api/wmts';
+let cache = null;
+function getOptionsFromCapabilities(filter) {
+  const parser = new ol_format__WEBPACK_IMPORTED_MODULE_0__["default"]();
+  if (!cache) {
+    return fetch(TEFENUA_WMTS_URL + '?request=GetCapabilities').then(resp => resp.text()).then(xml => {
+      const capabilities = parser.read(xml);
+      cache = capabilities;
+      return (0,ol_source_WMTS__WEBPACK_IMPORTED_MODULE_1__.optionsFromCapabilities)(capabilities, filter);
+    });
+  }
+  return (0,ol_source_WMTS__WEBPACK_IMPORTED_MODULE_1__.optionsFromCapabilities)(cache, filter);
+}
+function createTeFenuaLayer(filter) {
+  return getOptionsFromCapabilities(filter).then(options => {
+    return new ol_layer_Tile__WEBPACK_IMPORTED_MODULE_2__["default"]({
+      source: new TeFenua(options)
+    });
+  });
+}
+class TeFenua extends ol_source_WMTS__WEBPACK_IMPORTED_MODULE_1__["default"] {
+  constructor(options) {
+    options = options || {};
+    const attributions = '<a href="https://www.tefenua.gov.pf/">Te Fenua</a>';
+    const url = options.url || TEFENUA_WMTS_URL;
+    super({
+      ...options,
+      attributions: attributions,
+      attributionsCollapsible: false,
+      url: url
+    });
+  }
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (TeFenua);
 
 /***/ }),
 
@@ -12967,6 +13037,1022 @@ function xhr(url, format) {
  */
 function setWithCredentials(xhrWithCredentials) {
   withCredentials = xhrWithCredentials;
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/ol/format/OWS.js":
+/*!***************************************!*\
+  !*** ./node_modules/ol/format/OWS.js ***!
+  \***************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _XML_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./XML.js */ "./node_modules/ol/format/XML.js");
+/* harmony import */ var _xml_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../xml.js */ "./node_modules/ol/xml.js");
+/* harmony import */ var _xlink_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./xlink.js */ "./node_modules/ol/format/xlink.js");
+/* harmony import */ var _xsd_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./xsd.js */ "./node_modules/ol/format/xsd.js");
+/**
+ * @module ol/format/OWS
+ */
+
+
+
+
+
+/**
+ * @const
+ * @type {Array<null|string>}
+ */
+const NAMESPACE_URIS = [null, 'http://www.opengis.net/ows/1.1'];
+
+/**
+ * @const
+ * @type {Object<string, Object<string, import("../xml.js").Parser>>}
+ */
+// @ts-ignore
+const PARSERS = (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeStructureNS)(NAMESPACE_URIS, {
+  'ServiceIdentification': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(readServiceIdentification),
+  'ServiceProvider': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(readServiceProvider),
+  'OperationsMetadata': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(readOperationsMetadata),
+});
+
+class OWS extends _XML_js__WEBPACK_IMPORTED_MODULE_1__["default"] {
+  constructor() {
+    super();
+  }
+
+  /**
+   * @param {Element} node Node.
+   * @return {Object} Object
+   */
+  readFromNode(node) {
+    const owsObject = (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.pushParseAndPop)({}, PARSERS, node, []);
+    return owsObject ? owsObject : null;
+  }
+}
+
+/**
+ * @const
+ * @type {Object<string, Object<string, import("../xml.js").Parser>>}
+ */
+// @ts-ignore
+const ADDRESS_PARSERS = (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeStructureNS)(NAMESPACE_URIS, {
+  'DeliveryPoint': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(_xsd_js__WEBPACK_IMPORTED_MODULE_2__.readString),
+  'City': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(_xsd_js__WEBPACK_IMPORTED_MODULE_2__.readString),
+  'AdministrativeArea': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(_xsd_js__WEBPACK_IMPORTED_MODULE_2__.readString),
+  'PostalCode': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(_xsd_js__WEBPACK_IMPORTED_MODULE_2__.readString),
+  'Country': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(_xsd_js__WEBPACK_IMPORTED_MODULE_2__.readString),
+  'ElectronicMailAddress': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(_xsd_js__WEBPACK_IMPORTED_MODULE_2__.readString),
+});
+
+/**
+ * @const
+ * @type {Object<string, Object<string, import("../xml.js").Parser>>}
+ */
+// @ts-ignore
+const ALLOWED_VALUES_PARSERS = (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeStructureNS)(NAMESPACE_URIS, {
+  'Value': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertyPusher)(readValue),
+});
+
+/**
+ * @const
+ * @type {Object<string, Object<string, import("../xml.js").Parser>>}
+ */
+// @ts-ignore
+const CONSTRAINT_PARSERS = (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeStructureNS)(NAMESPACE_URIS, {
+  'AllowedValues': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(readAllowedValues),
+});
+
+/**
+ * @const
+ * @type {Object<string, Object<string, import("../xml.js").Parser>>}
+ */
+// @ts-ignore
+const CONTACT_INFO_PARSERS = (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeStructureNS)(NAMESPACE_URIS, {
+  'Phone': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(readPhone),
+  'Address': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(readAddress),
+});
+
+/**
+ * @const
+ * @type {Object<string, Object<string, import("../xml.js").Parser>>}
+ */
+// @ts-ignore
+const DCP_PARSERS = (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeStructureNS)(NAMESPACE_URIS, {
+  'HTTP': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(readHttp),
+});
+
+/**
+ * @const
+ * @type {Object<string, Object<string, import("../xml.js").Parser>>}
+ */
+// @ts-ignore
+const HTTP_PARSERS = (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeStructureNS)(NAMESPACE_URIS, {
+  'Get': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertyPusher)(readGet),
+  'Post': undefined, // TODO
+});
+
+/**
+ * @const
+ * @type {Object<string, Object<string, import("../xml.js").Parser>>}
+ */
+// @ts-ignore
+const OPERATION_PARSERS = (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeStructureNS)(NAMESPACE_URIS, {
+  'DCP': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(readDcp),
+});
+
+/**
+ * @const
+ * @type {Object<string, Object<string, import("../xml.js").Parser>>}
+ */
+// @ts-ignore
+const OPERATIONS_METADATA_PARSERS = (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeStructureNS)(NAMESPACE_URIS, {
+  'Operation': readOperation,
+});
+
+/**
+ * @const
+ * @type {Object<string, Object<string, import("../xml.js").Parser>>}
+ */
+// @ts-ignore
+const PHONE_PARSERS = (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeStructureNS)(NAMESPACE_URIS, {
+  'Voice': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(_xsd_js__WEBPACK_IMPORTED_MODULE_2__.readString),
+  'Facsimile': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(_xsd_js__WEBPACK_IMPORTED_MODULE_2__.readString),
+});
+
+/**
+ * @const
+ * @type {Object<string, Object<string, import("../xml.js").Parser>>}
+ */
+// @ts-ignore
+const REQUEST_METHOD_PARSERS = (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeStructureNS)(NAMESPACE_URIS, {
+  'Constraint': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertyPusher)(readConstraint),
+});
+
+/**
+ * @const
+ * @type {Object<string, Object<string, import("../xml.js").Parser>>}
+ */
+// @ts-ignore
+const SERVICE_CONTACT_PARSERS = (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeStructureNS)(NAMESPACE_URIS, {
+  'IndividualName': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(_xsd_js__WEBPACK_IMPORTED_MODULE_2__.readString),
+  'PositionName': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(_xsd_js__WEBPACK_IMPORTED_MODULE_2__.readString),
+  'ContactInfo': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(readContactInfo),
+});
+
+/**
+ * @const
+ * @type {Object<string, Object<string, import("../xml.js").Parser>>}
+ */
+// @ts-ignore
+const SERVICE_IDENTIFICATION_PARSERS = (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeStructureNS)(NAMESPACE_URIS, {
+  'Abstract': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(_xsd_js__WEBPACK_IMPORTED_MODULE_2__.readString),
+  'AccessConstraints': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(_xsd_js__WEBPACK_IMPORTED_MODULE_2__.readString),
+  'Fees': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(_xsd_js__WEBPACK_IMPORTED_MODULE_2__.readString),
+  'Title': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(_xsd_js__WEBPACK_IMPORTED_MODULE_2__.readString),
+  'ServiceTypeVersion': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(_xsd_js__WEBPACK_IMPORTED_MODULE_2__.readString),
+  'ServiceType': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(_xsd_js__WEBPACK_IMPORTED_MODULE_2__.readString),
+});
+
+/**
+ * @const
+ * @type {Object<string, Object<string, import("../xml.js").Parser>>}
+ */
+// @ts-ignore
+const SERVICE_PROVIDER_PARSERS = (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeStructureNS)(NAMESPACE_URIS, {
+  'ProviderName': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(_xsd_js__WEBPACK_IMPORTED_MODULE_2__.readString),
+  'ProviderSite': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(_xlink_js__WEBPACK_IMPORTED_MODULE_3__.readHref),
+  'ServiceContact': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(readServiceContact),
+});
+
+/**
+ * @param {Element} node Node.
+ * @param {Array<*>} objectStack Object stack.
+ * @return {Object|undefined} The address.
+ */
+function readAddress(node, objectStack) {
+  return (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.pushParseAndPop)({}, ADDRESS_PARSERS, node, objectStack);
+}
+
+/**
+ * @param {Element} node Node.
+ * @param {Array<*>} objectStack Object stack.
+ * @return {Object|undefined} The values.
+ */
+function readAllowedValues(node, objectStack) {
+  return (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.pushParseAndPop)({}, ALLOWED_VALUES_PARSERS, node, objectStack);
+}
+
+/**
+ * @param {Element} node Node.
+ * @param {Array<*>} objectStack Object stack.
+ * @return {Object|undefined} The constraint.
+ */
+function readConstraint(node, objectStack) {
+  const name = node.getAttribute('name');
+  if (!name) {
+    return undefined;
+  }
+  return (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.pushParseAndPop)({'name': name}, CONSTRAINT_PARSERS, node, objectStack);
+}
+
+/**
+ * @param {Element} node Node.
+ * @param {Array<*>} objectStack Object stack.
+ * @return {Object|undefined} The contact info.
+ */
+function readContactInfo(node, objectStack) {
+  return (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.pushParseAndPop)({}, CONTACT_INFO_PARSERS, node, objectStack);
+}
+
+/**
+ * @param {Element} node Node.
+ * @param {Array<*>} objectStack Object stack.
+ * @return {Object|undefined} The DCP.
+ */
+function readDcp(node, objectStack) {
+  return (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.pushParseAndPop)({}, DCP_PARSERS, node, objectStack);
+}
+
+/**
+ * @param {Element} node Node.
+ * @param {Array<*>} objectStack Object stack.
+ * @return {Object|undefined} The GET object.
+ */
+function readGet(node, objectStack) {
+  const href = (0,_xlink_js__WEBPACK_IMPORTED_MODULE_3__.readHref)(node);
+  if (!href) {
+    return undefined;
+  }
+  return (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.pushParseAndPop)(
+    {'href': href},
+    REQUEST_METHOD_PARSERS,
+    node,
+    objectStack
+  );
+}
+
+/**
+ * @param {Element} node Node.
+ * @param {Array<*>} objectStack Object stack.
+ * @return {Object|undefined} The HTTP object.
+ */
+function readHttp(node, objectStack) {
+  return (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.pushParseAndPop)({}, HTTP_PARSERS, node, objectStack);
+}
+
+/**
+ * @param {Element} node Node.
+ * @param {Array<*>} objectStack Object stack.
+ * @return {Object|undefined} The operation.
+ */
+function readOperation(node, objectStack) {
+  const name = node.getAttribute('name');
+  const value = (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.pushParseAndPop)({}, OPERATION_PARSERS, node, objectStack);
+  if (!value) {
+    return undefined;
+  }
+  const object = /** @type {Object} */ (objectStack[objectStack.length - 1]);
+  object[name] = value;
+}
+
+/**
+ * @param {Element} node Node.
+ * @param {Array<*>} objectStack Object stack.
+ * @return {Object|undefined} The operations metadata.
+ */
+function readOperationsMetadata(node, objectStack) {
+  return (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.pushParseAndPop)({}, OPERATIONS_METADATA_PARSERS, node, objectStack);
+}
+
+/**
+ * @param {Element} node Node.
+ * @param {Array<*>} objectStack Object stack.
+ * @return {Object|undefined} The phone.
+ */
+function readPhone(node, objectStack) {
+  return (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.pushParseAndPop)({}, PHONE_PARSERS, node, objectStack);
+}
+
+/**
+ * @param {Element} node Node.
+ * @param {Array<*>} objectStack Object stack.
+ * @return {Object|undefined} The service identification.
+ */
+function readServiceIdentification(node, objectStack) {
+  return (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.pushParseAndPop)({}, SERVICE_IDENTIFICATION_PARSERS, node, objectStack);
+}
+
+/**
+ * @param {Element} node Node.
+ * @param {Array<*>} objectStack Object stack.
+ * @return {Object|undefined} The service contact.
+ */
+function readServiceContact(node, objectStack) {
+  return (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.pushParseAndPop)({}, SERVICE_CONTACT_PARSERS, node, objectStack);
+}
+
+/**
+ * @param {Element} node Node.
+ * @param {Array<*>} objectStack Object stack.
+ * @return {Object|undefined} The service provider.
+ */
+function readServiceProvider(node, objectStack) {
+  return (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.pushParseAndPop)({}, SERVICE_PROVIDER_PARSERS, node, objectStack);
+}
+
+/**
+ * @param {Node} node Node.
+ * @param {Array<*>} objectStack Object stack.
+ * @return {string|undefined} The value.
+ */
+function readValue(node, objectStack) {
+  return (0,_xsd_js__WEBPACK_IMPORTED_MODULE_2__.readString)(node);
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (OWS);
+
+
+/***/ }),
+
+/***/ "./node_modules/ol/format/WMTSCapabilities.js":
+/*!****************************************************!*\
+  !*** ./node_modules/ol/format/WMTSCapabilities.js ***!
+  \****************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _OWS_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./OWS.js */ "./node_modules/ol/format/OWS.js");
+/* harmony import */ var _XML_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./XML.js */ "./node_modules/ol/format/XML.js");
+/* harmony import */ var _extent_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../extent.js */ "./node_modules/ol/extent.js");
+/* harmony import */ var _xml_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../xml.js */ "./node_modules/ol/xml.js");
+/* harmony import */ var _xsd_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./xsd.js */ "./node_modules/ol/format/xsd.js");
+/* harmony import */ var _xlink_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./xlink.js */ "./node_modules/ol/format/xlink.js");
+/**
+ * @module ol/format/WMTSCapabilities
+ */
+
+
+
+
+
+
+
+/**
+ * @const
+ * @type {Array<null|string>}
+ */
+const NAMESPACE_URIS = [null, 'http://www.opengis.net/wmts/1.0'];
+
+/**
+ * @const
+ * @type {Array<null|string>}
+ */
+const OWS_NAMESPACE_URIS = [null, 'http://www.opengis.net/ows/1.1'];
+
+/**
+ * @const
+ * @type {Object<string, Object<string, import("../xml.js").Parser>>}
+ */
+// @ts-ignore
+const PARSERS = (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeStructureNS)(NAMESPACE_URIS, {
+  'Contents': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(readContents),
+});
+
+/**
+ * @classdesc
+ * Format for reading WMTS capabilities data.
+ *
+ * @api
+ */
+class WMTSCapabilities extends _XML_js__WEBPACK_IMPORTED_MODULE_1__["default"] {
+  constructor() {
+    super();
+
+    /**
+     * @type {OWS}
+     * @private
+     */
+    this.owsParser_ = new _OWS_js__WEBPACK_IMPORTED_MODULE_2__["default"]();
+  }
+
+  /**
+   * @param {Element} node Node.
+   * @return {Object} Object
+   */
+  readFromNode(node) {
+    let version = node.getAttribute('version');
+    if (version) {
+      version = version.trim();
+    }
+    let WMTSCapabilityObject = this.owsParser_.readFromNode(node);
+    if (!WMTSCapabilityObject) {
+      return null;
+    }
+    WMTSCapabilityObject['version'] = version;
+    WMTSCapabilityObject = (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.pushParseAndPop)(
+      WMTSCapabilityObject,
+      PARSERS,
+      node,
+      []
+    );
+    return WMTSCapabilityObject ? WMTSCapabilityObject : null;
+  }
+}
+
+/**
+ * @const
+ * @type {Object<string, Object<string, import("../xml.js").Parser>>}
+ */
+// @ts-ignore
+const CONTENTS_PARSERS = (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeStructureNS)(NAMESPACE_URIS, {
+  'Layer': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertyPusher)(readLayer),
+  'TileMatrixSet': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertyPusher)(readTileMatrixSet),
+});
+
+/**
+ * @const
+ * @type {Object<string, Object<string, import("../xml.js").Parser>>}
+ */
+// @ts-ignore
+const LAYER_PARSERS = (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeStructureNS)(
+  NAMESPACE_URIS,
+  {
+    'Style': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertyPusher)(readStyle),
+    'Format': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertyPusher)(_xsd_js__WEBPACK_IMPORTED_MODULE_3__.readString),
+    'TileMatrixSetLink': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertyPusher)(readTileMatrixSetLink),
+    'Dimension': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertyPusher)(readDimensions),
+    'ResourceURL': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertyPusher)(readResourceUrl),
+  },
+  (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeStructureNS)(OWS_NAMESPACE_URIS, {
+    'Title': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(_xsd_js__WEBPACK_IMPORTED_MODULE_3__.readString),
+    'Abstract': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(_xsd_js__WEBPACK_IMPORTED_MODULE_3__.readString),
+    'WGS84BoundingBox': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(readBoundingBox),
+    'Identifier': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(_xsd_js__WEBPACK_IMPORTED_MODULE_3__.readString),
+  })
+);
+
+/**
+ * @const
+ * @type {Object<string, Object<string, import("../xml.js").Parser>>}
+ */
+// @ts-ignore
+const STYLE_PARSERS = (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeStructureNS)(
+  NAMESPACE_URIS,
+  {
+    'LegendURL': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertyPusher)(readLegendUrl),
+  },
+  (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeStructureNS)(OWS_NAMESPACE_URIS, {
+    'Title': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(_xsd_js__WEBPACK_IMPORTED_MODULE_3__.readString),
+    'Identifier': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(_xsd_js__WEBPACK_IMPORTED_MODULE_3__.readString),
+  })
+);
+
+/**
+ * @const
+ * @type {Object<string, Object<string, import("../xml.js").Parser>>}
+ */
+// @ts-ignore
+const TMS_LINKS_PARSERS = (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeStructureNS)(NAMESPACE_URIS, {
+  'TileMatrixSet': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(_xsd_js__WEBPACK_IMPORTED_MODULE_3__.readString),
+  'TileMatrixSetLimits': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(readTileMatrixLimitsList),
+});
+
+/**
+ * @const
+ * @type {Object<string, Object<string, import("../xml.js").Parser>>}
+ */
+// @ts-ignore
+const TMS_LIMITS_LIST_PARSERS = (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeStructureNS)(NAMESPACE_URIS, {
+  'TileMatrixLimits': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeArrayPusher)(readTileMatrixLimits),
+});
+
+/**
+ * @const
+ * @type {Object<string, Object<string, import("../xml.js").Parser>>}
+ */
+// @ts-ignore
+const TMS_LIMITS_PARSERS = (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeStructureNS)(NAMESPACE_URIS, {
+  'TileMatrix': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(_xsd_js__WEBPACK_IMPORTED_MODULE_3__.readString),
+  'MinTileRow': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(_xsd_js__WEBPACK_IMPORTED_MODULE_3__.readPositiveInteger),
+  'MaxTileRow': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(_xsd_js__WEBPACK_IMPORTED_MODULE_3__.readPositiveInteger),
+  'MinTileCol': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(_xsd_js__WEBPACK_IMPORTED_MODULE_3__.readPositiveInteger),
+  'MaxTileCol': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(_xsd_js__WEBPACK_IMPORTED_MODULE_3__.readPositiveInteger),
+});
+
+/**
+ * @const
+ * @type {Object<string, Object<string, import("../xml.js").Parser>>}
+ */
+// @ts-ignore
+const DIMENSION_PARSERS = (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeStructureNS)(
+  NAMESPACE_URIS,
+  {
+    'Default': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(_xsd_js__WEBPACK_IMPORTED_MODULE_3__.readString),
+    'Value': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertyPusher)(_xsd_js__WEBPACK_IMPORTED_MODULE_3__.readString),
+  },
+  (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeStructureNS)(OWS_NAMESPACE_URIS, {
+    'Identifier': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(_xsd_js__WEBPACK_IMPORTED_MODULE_3__.readString),
+  })
+);
+
+/**
+ * @const
+ * @type {Object<string, Object<string, import("../xml.js").Parser>>}
+ */
+// @ts-ignore
+const WGS84_BBOX_READERS = (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeStructureNS)(OWS_NAMESPACE_URIS, {
+  'LowerCorner': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeArrayPusher)(readCoordinates),
+  'UpperCorner': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeArrayPusher)(readCoordinates),
+});
+
+/**
+ * @const
+ * @type {Object<string, Object<string, import("../xml.js").Parser>>}
+ */
+// @ts-ignore
+const TMS_PARSERS = (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeStructureNS)(
+  NAMESPACE_URIS,
+  {
+    'WellKnownScaleSet': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(_xsd_js__WEBPACK_IMPORTED_MODULE_3__.readString),
+    'TileMatrix': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertyPusher)(readTileMatrix),
+  },
+  (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeStructureNS)(OWS_NAMESPACE_URIS, {
+    'SupportedCRS': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(_xsd_js__WEBPACK_IMPORTED_MODULE_3__.readString),
+    'Identifier': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(_xsd_js__WEBPACK_IMPORTED_MODULE_3__.readString),
+    'BoundingBox': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(readBoundingBox),
+  })
+);
+
+/**
+ * @const
+ * @type {Object<string, Object<string, import("../xml.js").Parser>>}
+ */
+// @ts-ignore
+const TM_PARSERS = (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeStructureNS)(
+  NAMESPACE_URIS,
+  {
+    'TopLeftCorner': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(readCoordinates),
+    'ScaleDenominator': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(_xsd_js__WEBPACK_IMPORTED_MODULE_3__.readDecimal),
+    'TileWidth': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(_xsd_js__WEBPACK_IMPORTED_MODULE_3__.readPositiveInteger),
+    'TileHeight': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(_xsd_js__WEBPACK_IMPORTED_MODULE_3__.readPositiveInteger),
+    'MatrixWidth': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(_xsd_js__WEBPACK_IMPORTED_MODULE_3__.readPositiveInteger),
+    'MatrixHeight': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(_xsd_js__WEBPACK_IMPORTED_MODULE_3__.readPositiveInteger),
+  },
+  (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeStructureNS)(OWS_NAMESPACE_URIS, {
+    'Identifier': (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.makeObjectPropertySetter)(_xsd_js__WEBPACK_IMPORTED_MODULE_3__.readString),
+  })
+);
+
+/**
+ * @param {Element} node Node.
+ * @param {Array<*>} objectStack Object stack.
+ * @return {Object|undefined} Attribution object.
+ */
+function readContents(node, objectStack) {
+  return (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.pushParseAndPop)({}, CONTENTS_PARSERS, node, objectStack);
+}
+
+/**
+ * @param {Element} node Node.
+ * @param {Array<*>} objectStack Object stack.
+ * @return {Object|undefined} Layers object.
+ */
+function readLayer(node, objectStack) {
+  return (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.pushParseAndPop)({}, LAYER_PARSERS, node, objectStack);
+}
+
+/**
+ * @param {Element} node Node.
+ * @param {Array<*>} objectStack Object stack.
+ * @return {Object|undefined} Tile Matrix Set object.
+ */
+function readTileMatrixSet(node, objectStack) {
+  return (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.pushParseAndPop)({}, TMS_PARSERS, node, objectStack);
+}
+
+/**
+ * @param {Element} node Node.
+ * @param {Array<*>} objectStack Object stack.
+ * @return {Object|undefined} Style object.
+ */
+function readStyle(node, objectStack) {
+  const style = (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.pushParseAndPop)({}, STYLE_PARSERS, node, objectStack);
+  if (!style) {
+    return undefined;
+  }
+  const isDefault = node.getAttribute('isDefault') === 'true';
+  style['isDefault'] = isDefault;
+  return style;
+}
+
+/**
+ * @param {Element} node Node.
+ * @param {Array<*>} objectStack Object stack.
+ * @return {Object|undefined} Tile Matrix Set Link object.
+ */
+function readTileMatrixSetLink(node, objectStack) {
+  return (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.pushParseAndPop)({}, TMS_LINKS_PARSERS, node, objectStack);
+}
+
+/**
+ * @param {Element} node Node.
+ * @param {Array<*>} objectStack Object stack.
+ * @return {Object|undefined} Dimension object.
+ */
+function readDimensions(node, objectStack) {
+  return (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.pushParseAndPop)({}, DIMENSION_PARSERS, node, objectStack);
+}
+
+/**
+ * @param {Element} node Node.
+ * @param {Array<*>} objectStack Object stack.
+ * @return {Object|undefined} Resource URL object.
+ */
+function readResourceUrl(node, objectStack) {
+  const format = node.getAttribute('format');
+  const template = node.getAttribute('template');
+  const resourceType = node.getAttribute('resourceType');
+  const resource = {};
+  if (format) {
+    resource['format'] = format;
+  }
+  if (template) {
+    resource['template'] = template;
+  }
+  if (resourceType) {
+    resource['resourceType'] = resourceType;
+  }
+  return resource;
+}
+
+/**
+ * @param {Element} node Node.
+ * @param {Array<*>} objectStack Object stack.
+ * @return {Object|undefined} BBox object.
+ */
+function readBoundingBox(node, objectStack) {
+  const coordinates = (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.pushParseAndPop)(
+    [],
+    WGS84_BBOX_READERS,
+    node,
+    objectStack
+  );
+  if (coordinates.length != 2) {
+    return undefined;
+  }
+  return (0,_extent_js__WEBPACK_IMPORTED_MODULE_4__.boundingExtent)(coordinates);
+}
+
+/**
+ * @param {Element} node Node.
+ * @param {Array<*>} objectStack Object stack.
+ * @return {Object|undefined} Legend object.
+ */
+function readLegendUrl(node, objectStack) {
+  const legend = {};
+  legend['format'] = node.getAttribute('format');
+  legend['href'] = (0,_xlink_js__WEBPACK_IMPORTED_MODULE_5__.readHref)(node);
+  return legend;
+}
+
+/**
+ * @param {Node} node Node.
+ * @param {Array<*>} objectStack Object stack.
+ * @return {Object|undefined} Coordinates object.
+ */
+function readCoordinates(node, objectStack) {
+  const coordinates = (0,_xsd_js__WEBPACK_IMPORTED_MODULE_3__.readString)(node).split(/\s+/);
+  if (!coordinates || coordinates.length != 2) {
+    return undefined;
+  }
+  const x = +coordinates[0];
+  const y = +coordinates[1];
+  if (isNaN(x) || isNaN(y)) {
+    return undefined;
+  }
+  return [x, y];
+}
+
+/**
+ * @param {Element} node Node.
+ * @param {Array<*>} objectStack Object stack.
+ * @return {Object|undefined} TileMatrix object.
+ */
+function readTileMatrix(node, objectStack) {
+  return (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.pushParseAndPop)({}, TM_PARSERS, node, objectStack);
+}
+
+/**
+ * @param {Element} node Node.
+ * @param {Array<*>} objectStack Object stack.
+ * @return {Object|undefined} TileMatrixSetLimits Object.
+ */
+function readTileMatrixLimitsList(node, objectStack) {
+  return (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.pushParseAndPop)([], TMS_LIMITS_LIST_PARSERS, node, objectStack);
+}
+
+/**
+ * @param {Element} node Node.
+ * @param {Array<*>} objectStack Object stack.
+ * @return {Object|undefined} TileMatrixLimits Array.
+ */
+function readTileMatrixLimits(node, objectStack) {
+  return (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.pushParseAndPop)({}, TMS_LIMITS_PARSERS, node, objectStack);
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (WMTSCapabilities);
+
+
+/***/ }),
+
+/***/ "./node_modules/ol/format/XML.js":
+/*!***************************************!*\
+  !*** ./node_modules/ol/format/XML.js ***!
+  \***************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _xml_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../xml.js */ "./node_modules/ol/xml.js");
+/**
+ * @module ol/format/XML
+ */
+
+
+/**
+ * @classdesc
+ * Generic format for reading non-feature XML data
+ *
+ * @abstract
+ */
+class XML {
+  /**
+   * Read the source document.
+   *
+   * @param {Document|Element|string} source The XML source.
+   * @return {Object} An object representing the source.
+   * @api
+   */
+  read(source) {
+    if (!source) {
+      return null;
+    } else if (typeof source === 'string') {
+      const doc = (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.parse)(source);
+      return this.readFromDocument(doc);
+    } else if ((0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.isDocument)(source)) {
+      return this.readFromDocument(/** @type {Document} */ (source));
+    }
+    return this.readFromNode(/** @type {Element} */ (source));
+  }
+
+  /**
+   * @param {Document} doc Document.
+   * @return {Object} Object
+   */
+  readFromDocument(doc) {
+    for (let n = doc.firstChild; n; n = n.nextSibling) {
+      if (n.nodeType == Node.ELEMENT_NODE) {
+        return this.readFromNode(/** @type {Element} */ (n));
+      }
+    }
+    return null;
+  }
+
+  /**
+   * @abstract
+   * @param {Element} node Node.
+   * @return {Object} Object
+   */
+  readFromNode(node) {}
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (XML);
+
+
+/***/ }),
+
+/***/ "./node_modules/ol/format/xlink.js":
+/*!*****************************************!*\
+  !*** ./node_modules/ol/format/xlink.js ***!
+  \*****************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "readHref": () => (/* binding */ readHref)
+/* harmony export */ });
+/**
+ * @module ol/format/xlink
+ */
+
+/**
+ * @const
+ * @type {string}
+ */
+const NAMESPACE_URI = 'http://www.w3.org/1999/xlink';
+
+/**
+ * @param {Element} node Node.
+ * @return {string|undefined} href.
+ */
+function readHref(node) {
+  return node.getAttributeNS(NAMESPACE_URI, 'href');
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/ol/format/xsd.js":
+/*!***************************************!*\
+  !*** ./node_modules/ol/format/xsd.js ***!
+  \***************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "readBoolean": () => (/* binding */ readBoolean),
+/* harmony export */   "readBooleanString": () => (/* binding */ readBooleanString),
+/* harmony export */   "readDateTime": () => (/* binding */ readDateTime),
+/* harmony export */   "readDecimal": () => (/* binding */ readDecimal),
+/* harmony export */   "readDecimalString": () => (/* binding */ readDecimalString),
+/* harmony export */   "readNonNegativeIntegerString": () => (/* binding */ readNonNegativeIntegerString),
+/* harmony export */   "readPositiveInteger": () => (/* binding */ readPositiveInteger),
+/* harmony export */   "readString": () => (/* binding */ readString),
+/* harmony export */   "writeBooleanTextNode": () => (/* binding */ writeBooleanTextNode),
+/* harmony export */   "writeCDATASection": () => (/* binding */ writeCDATASection),
+/* harmony export */   "writeDateTimeTextNode": () => (/* binding */ writeDateTimeTextNode),
+/* harmony export */   "writeDecimalTextNode": () => (/* binding */ writeDecimalTextNode),
+/* harmony export */   "writeNonNegativeIntegerTextNode": () => (/* binding */ writeNonNegativeIntegerTextNode),
+/* harmony export */   "writeStringTextNode": () => (/* binding */ writeStringTextNode)
+/* harmony export */ });
+/* harmony import */ var _xml_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../xml.js */ "./node_modules/ol/xml.js");
+/* harmony import */ var _string_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../string.js */ "./node_modules/ol/string.js");
+/**
+ * @module ol/format/xsd
+ */
+
+
+
+/**
+ * @param {Node} node Node.
+ * @return {boolean|undefined} Boolean.
+ */
+function readBoolean(node) {
+  const s = (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.getAllTextContent)(node, false);
+  return readBooleanString(s);
+}
+
+/**
+ * @param {string} string String.
+ * @return {boolean|undefined} Boolean.
+ */
+function readBooleanString(string) {
+  const m = /^\s*(true|1)|(false|0)\s*$/.exec(string);
+  if (m) {
+    return m[1] !== undefined || false;
+  }
+  return undefined;
+}
+
+/**
+ * @param {Node} node Node.
+ * @return {number|undefined} DateTime in seconds.
+ */
+function readDateTime(node) {
+  const s = (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.getAllTextContent)(node, false);
+  const dateTime = Date.parse(s);
+  return isNaN(dateTime) ? undefined : dateTime / 1000;
+}
+
+/**
+ * @param {Node} node Node.
+ * @return {number|undefined} Decimal.
+ */
+function readDecimal(node) {
+  const s = (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.getAllTextContent)(node, false);
+  return readDecimalString(s);
+}
+
+/**
+ * @param {string} string String.
+ * @return {number|undefined} Decimal.
+ */
+function readDecimalString(string) {
+  // FIXME check spec
+  const m = /^\s*([+\-]?\d*\.?\d+(?:e[+\-]?\d+)?)\s*$/i.exec(string);
+  if (m) {
+    return parseFloat(m[1]);
+  }
+  return undefined;
+}
+
+/**
+ * @param {Node} node Node.
+ * @return {number|undefined} Non negative integer.
+ */
+function readPositiveInteger(node) {
+  const s = (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.getAllTextContent)(node, false);
+  return readNonNegativeIntegerString(s);
+}
+
+/**
+ * @param {string} string String.
+ * @return {number|undefined} Non negative integer.
+ */
+function readNonNegativeIntegerString(string) {
+  const m = /^\s*(\d+)\s*$/.exec(string);
+  if (m) {
+    return parseInt(m[1], 10);
+  }
+  return undefined;
+}
+
+/**
+ * @param {Node} node Node.
+ * @return {string|undefined} String.
+ */
+function readString(node) {
+  return (0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.getAllTextContent)(node, false).trim();
+}
+
+/**
+ * @param {Node} node Node to append a TextNode with the boolean to.
+ * @param {boolean} bool Boolean.
+ */
+function writeBooleanTextNode(node, bool) {
+  writeStringTextNode(node, bool ? '1' : '0');
+}
+
+/**
+ * @param {Node} node Node to append a CDATA Section with the string to.
+ * @param {string} string String.
+ */
+function writeCDATASection(node, string) {
+  node.appendChild((0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.getDocument)().createCDATASection(string));
+}
+
+/**
+ * @param {Node} node Node to append a TextNode with the dateTime to.
+ * @param {number} dateTime DateTime in seconds.
+ */
+function writeDateTimeTextNode(node, dateTime) {
+  const date = new Date(dateTime * 1000);
+  const string =
+    date.getUTCFullYear() +
+    '-' +
+    (0,_string_js__WEBPACK_IMPORTED_MODULE_1__.padNumber)(date.getUTCMonth() + 1, 2) +
+    '-' +
+    (0,_string_js__WEBPACK_IMPORTED_MODULE_1__.padNumber)(date.getUTCDate(), 2) +
+    'T' +
+    (0,_string_js__WEBPACK_IMPORTED_MODULE_1__.padNumber)(date.getUTCHours(), 2) +
+    ':' +
+    (0,_string_js__WEBPACK_IMPORTED_MODULE_1__.padNumber)(date.getUTCMinutes(), 2) +
+    ':' +
+    (0,_string_js__WEBPACK_IMPORTED_MODULE_1__.padNumber)(date.getUTCSeconds(), 2) +
+    'Z';
+  node.appendChild((0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.getDocument)().createTextNode(string));
+}
+
+/**
+ * @param {Node} node Node to append a TextNode with the decimal to.
+ * @param {number} decimal Decimal.
+ */
+function writeDecimalTextNode(node, decimal) {
+  const string = decimal.toPrecision();
+  node.appendChild((0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.getDocument)().createTextNode(string));
+}
+
+/**
+ * @param {Node} node Node to append a TextNode with the decimal to.
+ * @param {number} nonNegativeInteger Non negative integer.
+ */
+function writeNonNegativeIntegerTextNode(node, nonNegativeInteger) {
+  const string = nonNegativeInteger.toString();
+  node.appendChild((0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.getDocument)().createTextNode(string));
+}
+
+/**
+ * @param {Node} node Node to append a TextNode with the string to.
+ * @param {string} string String.
+ */
+function writeStringTextNode(node, string) {
+  node.appendChild((0,_xml_js__WEBPACK_IMPORTED_MODULE_0__.getDocument)().createTextNode(string));
 }
 
 
@@ -34651,116 +35737,6 @@ function toSize(size, dest) {
 
 /***/ }),
 
-/***/ "./node_modules/ol/source/OSM.js":
-/*!***************************************!*\
-  !*** ./node_modules/ol/source/OSM.js ***!
-  \***************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "ATTRIBUTION": () => (/* binding */ ATTRIBUTION),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _XYZ_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./XYZ.js */ "./node_modules/ol/source/XYZ.js");
-/**
- * @module ol/source/OSM
- */
-
-
-
-/**
- * The attribution containing a link to the OpenStreetMap Copyright and License
- * page.
- * @const
- * @type {string}
- * @api
- */
-const ATTRIBUTION =
-  '&#169; ' +
-  '<a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> ' +
-  'contributors.';
-
-/**
- * @typedef {Object} Options
- * @property {import("./Source.js").AttributionLike} [attributions] Attributions.
- * @property {number} [cacheSize] Initial tile cache size. Will auto-grow to hold at least the number of tiles in the viewport.
- * @property {null|string} [crossOrigin='anonymous'] The `crossOrigin` attribute for loaded images.  Note that
- * you must provide a `crossOrigin` value if you want to access pixel data with the Canvas renderer.
- * See https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image for more detail.
- * @property {boolean} [interpolate=true] Use interpolated values when resampling.  By default,
- * linear interpolation is used when resampling.  Set to false to use the nearest neighbor instead.
- * @property {number} [maxZoom=19] Max zoom.
- * @property {boolean} [opaque=true] Whether the layer is opaque.
- * @property {number} [reprojectionErrorThreshold=0.5] Maximum allowed reprojection error (in pixels).
- * Higher values can increase reprojection performance, but decrease precision.
- * @property {import("../Tile.js").LoadFunction} [tileLoadFunction] Optional function to load a tile given a URL. The default is
- * ```js
- * function(imageTile, src) {
- *   imageTile.getImage().src = src;
- * };
- * ```
- * @property {number} [transition=250] Duration of the opacity transition for rendering.
- * To disable the opacity transition, pass `transition: 0`.
- * @property {string} [url='https://tile.openstreetmap.org/{z}/{x}/{y}.png'] URL template.
- * Must include `{x}`, `{y}` or `{-y}`, and `{z}` placeholders.
- * @property {boolean} [wrapX=true] Whether to wrap the world horizontally.
- * @property {number|import("../array.js").NearestDirectionFunction} [zDirection=0]
- * Choose whether to use tiles with a higher or lower zoom level when between integer
- * zoom levels. See {@link module:ol/tilegrid/TileGrid~TileGrid#getZForResolution}.
- */
-
-/**
- * @classdesc
- * Layer source for the OpenStreetMap tile server.
- * @api
- */
-class OSM extends _XYZ_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
-  /**
-   * @param {Options} [options] Open Street Map options.
-   */
-  constructor(options) {
-    options = options || {};
-
-    let attributions;
-    if (options.attributions !== undefined) {
-      attributions = options.attributions;
-    } else {
-      attributions = [ATTRIBUTION];
-    }
-
-    const crossOrigin =
-      options.crossOrigin !== undefined ? options.crossOrigin : 'anonymous';
-
-    const url =
-      options.url !== undefined
-        ? options.url
-        : 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
-
-    super({
-      attributions: attributions,
-      attributionsCollapsible: false,
-      cacheSize: options.cacheSize,
-      crossOrigin: crossOrigin,
-      interpolate: options.interpolate,
-      maxZoom: options.maxZoom !== undefined ? options.maxZoom : 19,
-      opaque: options.opaque !== undefined ? options.opaque : true,
-      reprojectionErrorThreshold: options.reprojectionErrorThreshold,
-      tileLoadFunction: options.tileLoadFunction,
-      transition: options.transition,
-      url: url,
-      wrapX: options.wrapX,
-      zDirection: options.zDirection,
-    });
-  }
-}
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (OSM);
-
-
-/***/ }),
-
 /***/ "./node_modules/ol/source/Source.js":
 /*!******************************************!*\
   !*** ./node_modules/ol/source/Source.js ***!
@@ -37449,25 +38425,39 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/ol/source/XYZ.js":
-/*!***************************************!*\
-  !*** ./node_modules/ol/source/XYZ.js ***!
-  \***************************************/
+/***/ "./node_modules/ol/source/WMTS.js":
+/*!****************************************!*\
+  !*** ./node_modules/ol/source/WMTS.js ***!
+  \****************************************/
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   "optionsFromCapabilities": () => (/* binding */ optionsFromCapabilities)
 /* harmony export */ });
-/* harmony import */ var _TileImage_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TileImage.js */ "./node_modules/ol/source/TileImage.js");
-/* harmony import */ var _tilegrid_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../tilegrid.js */ "./node_modules/ol/tilegrid.js");
+/* harmony import */ var _TileImage_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TileImage.js */ "./node_modules/ol/source/TileImage.js");
+/* harmony import */ var _uri_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../uri.js */ "./node_modules/ol/uri.js");
+/* harmony import */ var _extent_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../extent.js */ "./node_modules/ol/extent.js");
+/* harmony import */ var _tilegrid_WMTS_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../tilegrid/WMTS.js */ "./node_modules/ol/tilegrid/WMTS.js");
+/* harmony import */ var _tileurlfunction_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../tileurlfunction.js */ "./node_modules/ol/tileurlfunction.js");
+/* harmony import */ var _proj_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../proj.js */ "./node_modules/ol/proj.js");
 /**
- * @module ol/source/XYZ
+ * @module ol/source/WMTS
  */
 
 
 
+
+
+
+
+
+/**
+ * Request encoding. One of 'KVP', 'REST'.
+ * @typedef {'KVP' | 'REST'} RequestEncoding
+ */
 
 /**
  * @typedef {Object} Options
@@ -37479,38 +38469,38 @@ __webpack_require__.r(__webpack_exports__);
  * See https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image for more detail.
  * @property {boolean} [interpolate=true] Use interpolated values when resampling.  By default,
  * linear interpolation is used when resampling.  Set to false to use the nearest neighbor instead.
- * @property {boolean} [opaque=false] Whether the layer is opaque.
- * @property {import("../proj.js").ProjectionLike} [projection='EPSG:3857'] Projection.
+ * @property {import("../tilegrid/WMTS.js").default} tileGrid Tile grid.
+ * @property {import("../proj.js").ProjectionLike} [projection] Projection. Default is the view projection.
  * @property {number} [reprojectionErrorThreshold=0.5] Maximum allowed reprojection error (in pixels).
  * Higher values can increase reprojection performance, but decrease precision.
- * @property {number} [maxZoom=42] Optional max zoom level. Not used if `tileGrid` is provided.
- * @property {number} [minZoom=0] Optional min zoom level. Not used if `tileGrid` is provided.
- * @property {number} [maxResolution] Optional tile grid resolution at level zero. Not used if `tileGrid` is provided.
- * @property {import("../tilegrid/TileGrid.js").default} [tileGrid] Tile grid.
+ * @property {RequestEncoding} [requestEncoding='KVP'] Request encoding.
+ * @property {string} layer Layer name as advertised in the WMTS capabilities.
+ * @property {string} style Style name as advertised in the WMTS capabilities.
+ * @property {typeof import("../ImageTile.js").default} [tileClass]  Class used to instantiate image tiles. Default is {@link module:ol/ImageTile~ImageTile}.
+ * @property {number} [tilePixelRatio=1] The pixel ratio used by the tile service.
+ * For example, if the tile service advertizes 256px by 256px tiles but actually sends 512px
+ * by 512px images (for retina/hidpi devices) then `tilePixelRatio`
+ * should be set to `2`.
+ * @property {string} [format='image/jpeg'] Image format. Only used when `requestEncoding` is `'KVP'`.
+ * @property {string} [version='1.0.0'] WMTS version.
+ * @property {string} matrixSet Matrix set.
+ * @property {!Object} [dimensions] Additional "dimensions" for tile requests.
+ * This is an object with properties named like the advertised WMTS dimensions.
+ * @property {string} [url]  A URL for the service.
+ * For the RESTful request encoding, this is a URL
+ * template.  For KVP encoding, it is normal URL. A `{?-?}` template pattern,
+ * for example `subdomain{a-f}.domain.com`, may be used instead of defining
+ * each one separately in the `urls` option.
  * @property {import("../Tile.js").LoadFunction} [tileLoadFunction] Optional function to load a tile given a URL. The default is
  * ```js
  * function(imageTile, src) {
  *   imageTile.getImage().src = src;
  * };
  * ```
- * @property {number} [tilePixelRatio=1] The pixel ratio used by the tile service.
- * For example, if the tile service advertizes 256px by 256px tiles but actually sends 512px
- * by 512px images (for retina/hidpi devices) then `tilePixelRatio`
- * should be set to `2`.
- * @property {number|import("../size.js").Size} [tileSize=[256, 256]] The tile size used by the tile service.
- * Not used if `tileGrid` is provided.
- * @property {number} [gutter=0] The size in pixels of the gutter around image tiles to ignore.
- * This allows artifacts of rendering at tile edges to be ignored.
- * Supported images should be wider and taller than the tile size by a value of `2 x gutter`.
- * @property {import("../Tile.js").UrlFunction} [tileUrlFunction] Optional function to get
- * tile URL given a tile coordinate and the projection.
- * Required if `url` or `urls` are not provided.
- * @property {string} [url] URL template. Must include `{x}`, `{y}` or `{-y}`,
- * and `{z}` placeholders. A `{?-?}` template pattern, for example `subdomain{a-f}.domain.com`,
- * may be used instead of defining each one separately in the `urls` option.
- * @property {Array<string>} [urls] An array of URL templates.
- * @property {boolean} [wrapX=true] Whether to wrap the world horizontally.
- * @property {number} [transition=250] Duration of the opacity transition for rendering.
+ * @property {Array<string>} [urls] An array of URLs.
+ * Requests will be distributed among the URLs in this array.
+ * @property {boolean} [wrapX=false] Whether to wrap the world horizontally.
+ * @property {number} [transition] Duration of the opacity transition for rendering.
  * To disable the opacity transition, pass `transition: 0`.
  * @property {number|import("../array.js").NearestDirectionFunction} [zDirection=0]
  * Choose whether to use tiles with a higher or lower zoom level when between integer
@@ -37519,78 +38509,530 @@ __webpack_require__.r(__webpack_exports__);
 
 /**
  * @classdesc
- * Layer source for tile data with URLs in a set XYZ format that are
- * defined in a URL template. By default, this follows the widely-used
- * Google grid where `x` 0 and `y` 0 are in the top left. Grids like
- * TMS where `x` 0 and `y` 0 are in the bottom left can be used by
- * using the `{-y}` placeholder in the URL template, so long as the
- * source does not have a custom tile grid. In this case
- * a `tileUrlFunction` can be used, such as:
- * ```js
- *  tileUrlFunction: function(coordinate) {
- *    return 'http://mapserver.com/' + coordinate[0] + '/' +
- *      coordinate[1] + '/' + (-coordinate[2] - 1) + '.png';
- *  }
- * ```
+ * Layer source for tile data from WMTS servers.
  * @api
  */
-class XYZ extends _TileImage_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
+class WMTS extends _TileImage_js__WEBPACK_IMPORTED_MODULE_1__["default"] {
   /**
-   * @param {Options} [options] XYZ options.
+   * @param {Options} options WMTS options.
    */
   constructor(options) {
-    options = options || {};
+    // TODO: add support for TileMatrixLimits
 
-    const projection =
-      options.projection !== undefined ? options.projection : 'EPSG:3857';
+    const requestEncoding =
+      options.requestEncoding !== undefined ? options.requestEncoding : 'KVP';
 
-    const tileGrid =
-      options.tileGrid !== undefined
-        ? options.tileGrid
-        : (0,_tilegrid_js__WEBPACK_IMPORTED_MODULE_1__.createXYZ)({
-            extent: (0,_tilegrid_js__WEBPACK_IMPORTED_MODULE_1__.extentFromProjection)(projection),
-            maxResolution: options.maxResolution,
-            maxZoom: options.maxZoom,
-            minZoom: options.minZoom,
-            tileSize: options.tileSize,
-          });
+    // FIXME: should we create a default tileGrid?
+    // we could issue a getCapabilities xhr to retrieve missing configuration
+    const tileGrid = options.tileGrid;
+
+    let urls = options.urls;
+    if (urls === undefined && options.url !== undefined) {
+      urls = (0,_tileurlfunction_js__WEBPACK_IMPORTED_MODULE_2__.expandUrl)(options.url);
+    }
 
     super({
       attributions: options.attributions,
+      attributionsCollapsible: options.attributionsCollapsible,
       cacheSize: options.cacheSize,
       crossOrigin: options.crossOrigin,
       interpolate: options.interpolate,
-      opaque: options.opaque,
-      projection: projection,
+      projection: options.projection,
       reprojectionErrorThreshold: options.reprojectionErrorThreshold,
+      tileClass: options.tileClass,
       tileGrid: tileGrid,
       tileLoadFunction: options.tileLoadFunction,
       tilePixelRatio: options.tilePixelRatio,
-      tileUrlFunction: options.tileUrlFunction,
-      url: options.url,
-      urls: options.urls,
-      wrapX: options.wrapX !== undefined ? options.wrapX : true,
+      urls: urls,
+      wrapX: options.wrapX !== undefined ? options.wrapX : false,
       transition: options.transition,
-      attributionsCollapsible: options.attributionsCollapsible,
       zDirection: options.zDirection,
     });
 
     /**
      * @private
-     * @type {number}
+     * @type {string}
      */
-    this.gutter_ = options.gutter !== undefined ? options.gutter : 0;
+    this.version_ = options.version !== undefined ? options.version : '1.0.0';
+
+    /**
+     * @private
+     * @type {string}
+     */
+    this.format_ = options.format !== undefined ? options.format : 'image/jpeg';
+
+    /**
+     * @private
+     * @type {!Object}
+     */
+    this.dimensions_ =
+      options.dimensions !== undefined ? options.dimensions : {};
+
+    /**
+     * @private
+     * @type {string}
+     */
+    this.layer_ = options.layer;
+
+    /**
+     * @private
+     * @type {string}
+     */
+    this.matrixSet_ = options.matrixSet;
+
+    /**
+     * @private
+     * @type {string}
+     */
+    this.style_ = options.style;
+
+    // FIXME: should we guess this requestEncoding from options.url(s)
+    //        structure? that would mean KVP only if a template is not provided.
+
+    /**
+     * @private
+     * @type {RequestEncoding}
+     */
+    this.requestEncoding_ = requestEncoding;
+
+    this.setKey(this.getKeyForDimensions_());
+
+    if (urls && urls.length > 0) {
+      this.tileUrlFunction = (0,_tileurlfunction_js__WEBPACK_IMPORTED_MODULE_2__.createFromTileUrlFunctions)(
+        urls.map(this.createFromWMTSTemplate.bind(this))
+      );
+    }
   }
 
   /**
-   * @return {number} Gutter.
+   * Set the URLs to use for requests.
+   * URLs may contain OGC conform URL Template Variables: {TileMatrix}, {TileRow}, {TileCol}.
+   * @param {Array<string>} urls URLs.
    */
-  getGutter() {
-    return this.gutter_;
+  setUrls(urls) {
+    this.urls = urls;
+    const key = urls.join('\n');
+    this.setTileUrlFunction(
+      (0,_tileurlfunction_js__WEBPACK_IMPORTED_MODULE_2__.createFromTileUrlFunctions)(
+        urls.map(this.createFromWMTSTemplate.bind(this))
+      ),
+      key
+    );
+  }
+
+  /**
+   * Get the dimensions, i.e. those passed to the constructor through the
+   * "dimensions" option, and possibly updated using the updateDimensions
+   * method.
+   * @return {!Object} Dimensions.
+   * @api
+   */
+  getDimensions() {
+    return this.dimensions_;
+  }
+
+  /**
+   * Return the image format of the WMTS source.
+   * @return {string} Format.
+   * @api
+   */
+  getFormat() {
+    return this.format_;
+  }
+
+  /**
+   * Return the layer of the WMTS source.
+   * @return {string} Layer.
+   * @api
+   */
+  getLayer() {
+    return this.layer_;
+  }
+
+  /**
+   * Return the matrix set of the WMTS source.
+   * @return {string} MatrixSet.
+   * @api
+   */
+  getMatrixSet() {
+    return this.matrixSet_;
+  }
+
+  /**
+   * Return the request encoding, either "KVP" or "REST".
+   * @return {RequestEncoding} Request encoding.
+   * @api
+   */
+  getRequestEncoding() {
+    return this.requestEncoding_;
+  }
+
+  /**
+   * Return the style of the WMTS source.
+   * @return {string} Style.
+   * @api
+   */
+  getStyle() {
+    return this.style_;
+  }
+
+  /**
+   * Return the version of the WMTS source.
+   * @return {string} Version.
+   * @api
+   */
+  getVersion() {
+    return this.version_;
+  }
+
+  /**
+   * @private
+   * @return {string} The key for the current dimensions.
+   */
+  getKeyForDimensions_() {
+    const res = this.urls ? this.urls.slice(0) : [];
+    for (const key in this.dimensions_) {
+      res.push(key + '-' + this.dimensions_[key]);
+    }
+    return res.join('/');
+  }
+
+  /**
+   * Update the dimensions.
+   * @param {Object} dimensions Dimensions.
+   * @api
+   */
+  updateDimensions(dimensions) {
+    Object.assign(this.dimensions_, dimensions);
+    this.setKey(this.getKeyForDimensions_());
+  }
+
+  /**
+   * @param {string} template Template.
+   * @return {import("../Tile.js").UrlFunction} Tile URL function.
+   */
+  createFromWMTSTemplate(template) {
+    const requestEncoding = this.requestEncoding_;
+
+    // context property names are lower case to allow for a case insensitive
+    // replacement as some services use different naming conventions
+    const context = {
+      'layer': this.layer_,
+      'style': this.style_,
+      'tilematrixset': this.matrixSet_,
+    };
+
+    if (requestEncoding == 'KVP') {
+      Object.assign(context, {
+        'Service': 'WMTS',
+        'Request': 'GetTile',
+        'Version': this.version_,
+        'Format': this.format_,
+      });
+    }
+
+    // TODO: we may want to create our own appendParams function so that params
+    // order conforms to wmts spec guidance, and so that we can avoid to escape
+    // special template params
+
+    template =
+      requestEncoding == 'KVP'
+        ? (0,_uri_js__WEBPACK_IMPORTED_MODULE_3__.appendParams)(template, context)
+        : template.replace(/\{(\w+?)\}/g, function (m, p) {
+            return p.toLowerCase() in context ? context[p.toLowerCase()] : m;
+          });
+
+    const tileGrid = /** @type {import("../tilegrid/WMTS.js").default} */ (
+      this.tileGrid
+    );
+    const dimensions = this.dimensions_;
+
+    return (
+      /**
+       * @param {import("../tilecoord.js").TileCoord} tileCoord Tile coordinate.
+       * @param {number} pixelRatio Pixel ratio.
+       * @param {import("../proj/Projection.js").default} projection Projection.
+       * @return {string|undefined} Tile URL.
+       */
+      function (tileCoord, pixelRatio, projection) {
+        if (!tileCoord) {
+          return undefined;
+        }
+        const localContext = {
+          'TileMatrix': tileGrid.getMatrixId(tileCoord[0]),
+          'TileCol': tileCoord[1],
+          'TileRow': tileCoord[2],
+        };
+        Object.assign(localContext, dimensions);
+        let url = template;
+        if (requestEncoding == 'KVP') {
+          url = (0,_uri_js__WEBPACK_IMPORTED_MODULE_3__.appendParams)(url, localContext);
+        } else {
+          url = url.replace(/\{(\w+?)\}/g, function (m, p) {
+            return localContext[p];
+          });
+        }
+        return url;
+      }
+    );
   }
 }
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (XYZ);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (WMTS);
+
+/**
+ * Generate source options from a capabilities object.
+ * @param {Object} wmtsCap An object representing the capabilities document.
+ * @param {!Object} config Configuration properties for the layer.  Defaults for
+ *                  the layer will apply if not provided.
+ *
+ * Required config properties:
+ *  - layer - {string} The layer identifier.
+ *
+ * Optional config properties:
+ *  - matrixSet - {string} The matrix set identifier, required if there is
+ *       more than one matrix set in the layer capabilities.
+ *  - projection - {string} The desired CRS when no matrixSet is specified.
+ *       eg: "EPSG:3857". If the desired projection is not available,
+ *       an error is thrown.
+ *  - requestEncoding - {string} url encoding format for the layer. Default is
+ *       the first tile url format found in the GetCapabilities response.
+ *  - style - {string} The name of the style
+ *  - format - {string} Image format for the layer. Default is the first
+ *       format returned in the GetCapabilities response.
+ *  - crossOrigin - {string|null|undefined} Cross origin. Default is `undefined`.
+ * @return {Options|null} WMTS source options object or `null` if the layer was not found.
+ * @api
+ */
+function optionsFromCapabilities(wmtsCap, config) {
+  const layers = wmtsCap['Contents']['Layer'];
+  const l = layers.find(function (elt) {
+    return elt['Identifier'] == config['layer'];
+  });
+  if (!l) {
+    return null;
+  }
+  const tileMatrixSets = wmtsCap['Contents']['TileMatrixSet'];
+  let idx;
+  if (l['TileMatrixSetLink'].length > 1) {
+    if ('projection' in config) {
+      idx = l['TileMatrixSetLink'].findIndex(function (elt) {
+        const tileMatrixSet = tileMatrixSets.find(function (el) {
+          return el['Identifier'] == elt['TileMatrixSet'];
+        });
+        const supportedCRS = tileMatrixSet['SupportedCRS'];
+        const proj1 = (0,_proj_js__WEBPACK_IMPORTED_MODULE_0__.get)(supportedCRS);
+        const proj2 = (0,_proj_js__WEBPACK_IMPORTED_MODULE_0__.get)(config['projection']);
+        if (proj1 && proj2) {
+          return (0,_proj_js__WEBPACK_IMPORTED_MODULE_0__.equivalent)(proj1, proj2);
+        }
+        return supportedCRS == config['projection'];
+      });
+    } else {
+      idx = l['TileMatrixSetLink'].findIndex(function (elt) {
+        return elt['TileMatrixSet'] == config['matrixSet'];
+      });
+    }
+  } else {
+    idx = 0;
+  }
+  if (idx < 0) {
+    idx = 0;
+  }
+  const matrixSet =
+    /** @type {string} */
+    (l['TileMatrixSetLink'][idx]['TileMatrixSet']);
+  const matrixLimits =
+    /** @type {Array<Object>} */
+    (l['TileMatrixSetLink'][idx]['TileMatrixSetLimits']);
+
+  let format = /** @type {string} */ (l['Format'][0]);
+  if ('format' in config) {
+    format = config['format'];
+  }
+  idx = l['Style'].findIndex(function (elt) {
+    if ('style' in config) {
+      return elt['Title'] == config['style'];
+    }
+    return elt['isDefault'];
+  });
+  if (idx < 0) {
+    idx = 0;
+  }
+  const style = /** @type {string} */ (l['Style'][idx]['Identifier']);
+
+  const dimensions = {};
+  if ('Dimension' in l) {
+    l['Dimension'].forEach(function (elt, index, array) {
+      const key = elt['Identifier'];
+      let value = elt['Default'];
+      if (value === undefined) {
+        value = elt['Value'][0];
+      }
+      dimensions[key] = value;
+    });
+  }
+
+  const matrixSets = wmtsCap['Contents']['TileMatrixSet'];
+  const matrixSetObj = matrixSets.find(function (elt) {
+    return elt['Identifier'] == matrixSet;
+  });
+
+  let projection;
+  const code = matrixSetObj['SupportedCRS'];
+  if (code) {
+    projection = (0,_proj_js__WEBPACK_IMPORTED_MODULE_0__.get)(code);
+  }
+  if ('projection' in config) {
+    const projConfig = (0,_proj_js__WEBPACK_IMPORTED_MODULE_0__.get)(config['projection']);
+    if (projConfig) {
+      if (!projection || (0,_proj_js__WEBPACK_IMPORTED_MODULE_0__.equivalent)(projConfig, projection)) {
+        projection = projConfig;
+      }
+    }
+  }
+
+  let wrapX = false;
+  const switchXY = projection.getAxisOrientation().substr(0, 2) == 'ne';
+
+  let matrix = matrixSetObj.TileMatrix[0];
+
+  // create default matrixLimit
+  let selectedMatrixLimit = {
+    MinTileCol: 0,
+    MinTileRow: 0,
+    // subtract one to end up at tile top left
+    MaxTileCol: matrix.MatrixWidth - 1,
+    MaxTileRow: matrix.MatrixHeight - 1,
+  };
+
+  //in case of matrix limits, use matrix limits to calculate extent
+  if (matrixLimits) {
+    selectedMatrixLimit = matrixLimits[matrixLimits.length - 1];
+    const m = matrixSetObj.TileMatrix.find(
+      (tileMatrixValue) =>
+        tileMatrixValue.Identifier === selectedMatrixLimit.TileMatrix ||
+        matrixSetObj.Identifier + ':' + tileMatrixValue.Identifier ===
+          selectedMatrixLimit.TileMatrix
+    );
+    if (m) {
+      matrix = m;
+    }
+  }
+
+  const resolution =
+    (matrix.ScaleDenominator * 0.00028) / projection.getMetersPerUnit(); // WMTS 1.0.0: standardized rendering pixel size
+  const origin = switchXY
+    ? [matrix.TopLeftCorner[1], matrix.TopLeftCorner[0]]
+    : matrix.TopLeftCorner;
+  const tileSpanX = matrix.TileWidth * resolution;
+  const tileSpanY = matrix.TileHeight * resolution;
+  let matrixSetExtent = matrixSetObj['BoundingBox'];
+  if (matrixSetExtent && switchXY) {
+    matrixSetExtent = [
+      matrixSetExtent[1],
+      matrixSetExtent[0],
+      matrixSetExtent[3],
+      matrixSetExtent[2],
+    ];
+  }
+  let extent = [
+    origin[0] + tileSpanX * selectedMatrixLimit.MinTileCol,
+    // add one to get proper bottom/right coordinate
+    origin[1] - tileSpanY * (1 + selectedMatrixLimit.MaxTileRow),
+    origin[0] + tileSpanX * (1 + selectedMatrixLimit.MaxTileCol),
+    origin[1] - tileSpanY * selectedMatrixLimit.MinTileRow,
+  ];
+
+  if (
+    matrixSetExtent !== undefined &&
+    !(0,_extent_js__WEBPACK_IMPORTED_MODULE_4__.containsExtent)(matrixSetExtent, extent)
+  ) {
+    const wgs84BoundingBox = l['WGS84BoundingBox'];
+    const wgs84ProjectionExtent = (0,_proj_js__WEBPACK_IMPORTED_MODULE_0__.get)('EPSG:4326').getExtent();
+    extent = matrixSetExtent;
+    if (wgs84BoundingBox) {
+      wrapX =
+        wgs84BoundingBox[0] === wgs84ProjectionExtent[0] &&
+        wgs84BoundingBox[2] === wgs84ProjectionExtent[2];
+    } else {
+      const wgs84MatrixSetExtent = (0,_proj_js__WEBPACK_IMPORTED_MODULE_0__.transformExtent)(
+        matrixSetExtent,
+        matrixSetObj['SupportedCRS'],
+        'EPSG:4326'
+      );
+      // Ignore slight deviation from the correct x limits
+      wrapX =
+        wgs84MatrixSetExtent[0] - 1e-10 <= wgs84ProjectionExtent[0] &&
+        wgs84MatrixSetExtent[2] + 1e-10 >= wgs84ProjectionExtent[2];
+    }
+  }
+
+  const tileGrid = (0,_tilegrid_WMTS_js__WEBPACK_IMPORTED_MODULE_5__.createFromCapabilitiesMatrixSet)(
+    matrixSetObj,
+    extent,
+    matrixLimits
+  );
+
+  /** @type {!Array<string>} */
+  const urls = [];
+  let requestEncoding = config['requestEncoding'];
+  requestEncoding = requestEncoding !== undefined ? requestEncoding : '';
+
+  if (
+    'OperationsMetadata' in wmtsCap &&
+    'GetTile' in wmtsCap['OperationsMetadata']
+  ) {
+    const gets = wmtsCap['OperationsMetadata']['GetTile']['DCP']['HTTP']['Get'];
+
+    for (let i = 0, ii = gets.length; i < ii; ++i) {
+      if (gets[i]['Constraint']) {
+        const constraint = gets[i]['Constraint'].find(function (element) {
+          return element['name'] == 'GetEncoding';
+        });
+        const encodings = constraint['AllowedValues']['Value'];
+
+        if (requestEncoding === '') {
+          // requestEncoding not provided, use the first encoding from the list
+          requestEncoding = encodings[0];
+        }
+        if (requestEncoding === 'KVP') {
+          if (encodings.includes('KVP')) {
+            urls.push(/** @type {string} */ (gets[i]['href']));
+          }
+        } else {
+          break;
+        }
+      } else if (gets[i]['href']) {
+        requestEncoding = 'KVP';
+        urls.push(/** @type {string} */ (gets[i]['href']));
+      }
+    }
+  }
+  if (urls.length === 0) {
+    requestEncoding = 'REST';
+    l['ResourceURL'].forEach(function (element) {
+      if (element['resourceType'] === 'tile') {
+        format = element['format'];
+        urls.push(/** @type {string} */ (element['template']));
+      }
+    });
+  }
+
+  return {
+    urls: urls,
+    layer: config['layer'],
+    matrixSet: matrixSet,
+    format: format,
+    projection: projection,
+    requestEncoding: requestEncoding,
+    tileGrid: tileGrid,
+    style: style,
+    dimensions: dimensions,
+    wrapX: wrapX,
+    crossOrigin: config['crossOrigin'],
+  };
+}
 
 
 /***/ }),
@@ -43744,6 +45186,212 @@ class TileGrid {
 
 /***/ }),
 
+/***/ "./node_modules/ol/tilegrid/WMTS.js":
+/*!******************************************!*\
+  !*** ./node_modules/ol/tilegrid/WMTS.js ***!
+  \******************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "createFromCapabilitiesMatrixSet": () => (/* binding */ createFromCapabilitiesMatrixSet),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _TileGrid_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TileGrid.js */ "./node_modules/ol/tilegrid/TileGrid.js");
+/* harmony import */ var _proj_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../proj.js */ "./node_modules/ol/proj.js");
+/**
+ * @module ol/tilegrid/WMTS
+ */
+
+
+
+
+/**
+ * @typedef {Object} Options
+ * @property {import("../extent.js").Extent} [extent] Extent for the tile grid. No tiles
+ * outside this extent will be requested by {@link module:ol/source/Tile~TileSource} sources.
+ * When no `origin` or `origins` are configured, the `origin` will be set to the
+ * top-left corner of the extent.
+ * @property {import("../coordinate.js").Coordinate} [origin] The tile grid origin, i.e.
+ * where the `x` and `y` axes meet (`[z, 0, 0]`). Tile coordinates increase left
+ * to right and downwards. If not specified, `extent` or `origins` must be provided.
+ * @property {Array<import("../coordinate.js").Coordinate>} [origins] Tile grid origins,
+ * i.e. where the `x` and `y` axes meet (`[z, 0, 0]`), for each zoom level. If
+ * given, the array length should match the length of the `resolutions` array, i.e.
+ * each resolution can have a different origin. Tile coordinates increase left to
+ * right and downwards. If not specified, `extent` or `origin` must be provided.
+ * @property {!Array<number>} resolutions Resolutions. The array index of each
+ * resolution needs to match the zoom level. This means that even if a `minZoom`
+ * is configured, the resolutions array will have a length of `maxZoom + 1`
+ * @property {!Array<string>} matrixIds matrix IDs. The length of this array needs
+ * to match the length of the `resolutions` array.
+ * @property {Array<import("../size.js").Size>} [sizes] Number of tile rows and columns
+ * of the grid for each zoom level. The values here are the `TileMatrixWidth` and
+ * `TileMatrixHeight` advertised in the GetCapabilities response of the WMTS, and
+ * define each zoom level's extent together with the `origin` or `origins`.
+ * A grid `extent` can be configured in addition, and will further limit the extent for
+ * which tile requests are made by sources. If the bottom-left corner of
+ * an extent is used as `origin` or `origins`, then the `y` value must be
+ * negative because OpenLayers tile coordinates use the top left as the origin.
+ * @property {number|import("../size.js").Size} [tileSize] Tile size.
+ * @property {Array<number|import("../size.js").Size>} [tileSizes] Tile sizes. The length of
+ * this array needs to match the length of the `resolutions` array.
+ */
+
+/**
+ * @classdesc
+ * Set the grid pattern for sources accessing WMTS tiled-image servers.
+ * @api
+ */
+class WMTSTileGrid extends _TileGrid_js__WEBPACK_IMPORTED_MODULE_1__["default"] {
+  /**
+   * @param {Options} options WMTS options.
+   */
+  constructor(options) {
+    super({
+      extent: options.extent,
+      origin: options.origin,
+      origins: options.origins,
+      resolutions: options.resolutions,
+      tileSize: options.tileSize,
+      tileSizes: options.tileSizes,
+      sizes: options.sizes,
+    });
+
+    /**
+     * @private
+     * @type {!Array<string>}
+     */
+    this.matrixIds_ = options.matrixIds;
+  }
+
+  /**
+   * @param {number} z Z.
+   * @return {string} MatrixId..
+   */
+  getMatrixId(z) {
+    return this.matrixIds_[z];
+  }
+
+  /**
+   * Get the list of matrix identifiers.
+   * @return {Array<string>} MatrixIds.
+   * @api
+   */
+  getMatrixIds() {
+    return this.matrixIds_;
+  }
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (WMTSTileGrid);
+
+/**
+ * Create a tile grid from a WMTS capabilities matrix set and an
+ * optional TileMatrixSetLimits.
+ * @param {Object} matrixSet An object representing a matrixSet in the
+ *     capabilities document.
+ * @param {import("../extent.js").Extent} [extent] An optional extent to restrict the tile
+ *     ranges the server provides.
+ * @param {Array<Object>} [matrixLimits] An optional object representing
+ *     the available matrices for tileGrid.
+ * @return {WMTSTileGrid} WMTS tileGrid instance.
+ * @api
+ */
+function createFromCapabilitiesMatrixSet(
+  matrixSet,
+  extent,
+  matrixLimits
+) {
+  /** @type {!Array<number>} */
+  const resolutions = [];
+  /** @type {!Array<string>} */
+  const matrixIds = [];
+  /** @type {!Array<import("../coordinate.js").Coordinate>} */
+  const origins = [];
+  /** @type {!Array<number|import("../size.js").Size>} */
+  const tileSizes = [];
+  /** @type {!Array<import("../size.js").Size>} */
+  const sizes = [];
+
+  matrixLimits = matrixLimits !== undefined ? matrixLimits : [];
+
+  const supportedCRSPropName = 'SupportedCRS';
+  const matrixIdsPropName = 'TileMatrix';
+  const identifierPropName = 'Identifier';
+  const scaleDenominatorPropName = 'ScaleDenominator';
+  const topLeftCornerPropName = 'TopLeftCorner';
+  const tileWidthPropName = 'TileWidth';
+  const tileHeightPropName = 'TileHeight';
+
+  const code = matrixSet[supportedCRSPropName];
+  const projection = (0,_proj_js__WEBPACK_IMPORTED_MODULE_0__.get)(code);
+  const metersPerUnit = projection.getMetersPerUnit();
+  // swap origin x and y coordinates if axis orientation is lat/long
+  const switchOriginXY = projection.getAxisOrientation().substr(0, 2) == 'ne';
+
+  matrixSet[matrixIdsPropName].sort(function (a, b) {
+    return b[scaleDenominatorPropName] - a[scaleDenominatorPropName];
+  });
+
+  matrixSet[matrixIdsPropName].forEach(function (elt) {
+    let matrixAvailable;
+    // use of matrixLimits to filter TileMatrices from GetCapabilities
+    // TileMatrixSet from unavailable matrix levels.
+    if (matrixLimits.length > 0) {
+      matrixAvailable = matrixLimits.find(function (elt_ml) {
+        if (elt[identifierPropName] == elt_ml[matrixIdsPropName]) {
+          return true;
+        }
+        // Fallback for tileMatrix identifiers that don't get prefixed
+        // by their tileMatrixSet identifiers.
+        if (!elt[identifierPropName].includes(':')) {
+          return (
+            matrixSet[identifierPropName] + ':' + elt[identifierPropName] ===
+            elt_ml[matrixIdsPropName]
+          );
+        }
+        return false;
+      });
+    } else {
+      matrixAvailable = true;
+    }
+
+    if (matrixAvailable) {
+      matrixIds.push(elt[identifierPropName]);
+      const resolution =
+        (elt[scaleDenominatorPropName] * 0.28e-3) / metersPerUnit;
+      const tileWidth = elt[tileWidthPropName];
+      const tileHeight = elt[tileHeightPropName];
+      if (switchOriginXY) {
+        origins.push([
+          elt[topLeftCornerPropName][1],
+          elt[topLeftCornerPropName][0],
+        ]);
+      } else {
+        origins.push(elt[topLeftCornerPropName]);
+      }
+      resolutions.push(resolution);
+      tileSizes.push(
+        tileWidth == tileHeight ? tileWidth : [tileWidth, tileHeight]
+      );
+      sizes.push([elt['MatrixWidth'], elt['MatrixHeight']]);
+    }
+  });
+
+  return new WMTSTileGrid({
+    extent: extent,
+    origins: origins,
+    resolutions: resolutions,
+    matrixIds: matrixIds,
+    tileSizes: tileSizes,
+    sizes: sizes,
+  });
+}
+
+
+/***/ }),
+
 /***/ "./node_modules/ol/tilegrid/common.js":
 /*!********************************************!*\
   !*** ./node_modules/ol/tilegrid/common.js ***!
@@ -44240,6 +45888,48 @@ function toString(mat) {
 
 /***/ }),
 
+/***/ "./node_modules/ol/uri.js":
+/*!********************************!*\
+  !*** ./node_modules/ol/uri.js ***!
+  \********************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "appendParams": () => (/* binding */ appendParams)
+/* harmony export */ });
+/**
+ * @module ol/uri
+ */
+
+/**
+ * Appends query parameters to a URI.
+ *
+ * @param {string} uri The original URI, which may already have query data.
+ * @param {!Object} params An object where keys are URI-encoded parameter keys,
+ *     and the values are arbitrary types or arrays.
+ * @return {string} The new URI.
+ */
+function appendParams(uri, params) {
+  const keyParams = [];
+  // Skip any null or undefined parameter values
+  Object.keys(params).forEach(function (k) {
+    if (params[k] !== null && params[k] !== undefined) {
+      keyParams.push(k + '=' + encodeURIComponent(params[k]));
+    }
+  });
+  const qs = keyParams.join('&');
+  // remove any trailing ? or &
+  uri = uri.replace(/[?&]$/, '');
+  // append ? or & depending on whether uri has existing parameters
+  uri += uri.includes('?') ? '&' : '?';
+  return uri + qs;
+}
+
+
+/***/ }),
+
 /***/ "./node_modules/ol/util.js":
 /*!*********************************!*\
   !*** ./node_modules/ol/util.js ***!
@@ -44289,6 +45979,619 @@ function getUid(obj) {
  * @type {string}
  */
 const VERSION = '7.2.2';
+
+
+/***/ }),
+
+/***/ "./node_modules/ol/xml.js":
+/*!********************************!*\
+  !*** ./node_modules/ol/xml.js ***!
+  \********************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "OBJECT_PROPERTY_NODE_FACTORY": () => (/* binding */ OBJECT_PROPERTY_NODE_FACTORY),
+/* harmony export */   "XML_SCHEMA_INSTANCE_URI": () => (/* binding */ XML_SCHEMA_INSTANCE_URI),
+/* harmony export */   "createElementNS": () => (/* binding */ createElementNS),
+/* harmony export */   "getAllTextContent": () => (/* binding */ getAllTextContent),
+/* harmony export */   "getAllTextContent_": () => (/* binding */ getAllTextContent_),
+/* harmony export */   "getAttributeNS": () => (/* binding */ getAttributeNS),
+/* harmony export */   "getDocument": () => (/* binding */ getDocument),
+/* harmony export */   "getXMLSerializer": () => (/* binding */ getXMLSerializer),
+/* harmony export */   "isDocument": () => (/* binding */ isDocument),
+/* harmony export */   "makeArrayExtender": () => (/* binding */ makeArrayExtender),
+/* harmony export */   "makeArrayPusher": () => (/* binding */ makeArrayPusher),
+/* harmony export */   "makeArraySerializer": () => (/* binding */ makeArraySerializer),
+/* harmony export */   "makeChildAppender": () => (/* binding */ makeChildAppender),
+/* harmony export */   "makeObjectPropertyPusher": () => (/* binding */ makeObjectPropertyPusher),
+/* harmony export */   "makeObjectPropertySetter": () => (/* binding */ makeObjectPropertySetter),
+/* harmony export */   "makeReplacer": () => (/* binding */ makeReplacer),
+/* harmony export */   "makeSequence": () => (/* binding */ makeSequence),
+/* harmony export */   "makeSimpleNodeFactory": () => (/* binding */ makeSimpleNodeFactory),
+/* harmony export */   "makeStructureNS": () => (/* binding */ makeStructureNS),
+/* harmony export */   "parse": () => (/* binding */ parse),
+/* harmony export */   "parseNode": () => (/* binding */ parseNode),
+/* harmony export */   "pushParseAndPop": () => (/* binding */ pushParseAndPop),
+/* harmony export */   "pushSerializeAndPop": () => (/* binding */ pushSerializeAndPop),
+/* harmony export */   "registerDocument": () => (/* binding */ registerDocument),
+/* harmony export */   "registerXMLSerializer": () => (/* binding */ registerXMLSerializer),
+/* harmony export */   "serialize": () => (/* binding */ serialize)
+/* harmony export */ });
+/* harmony import */ var _array_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./array.js */ "./node_modules/ol/array.js");
+/**
+ * @module ol/xml
+ */
+
+
+/**
+ * When using {@link module:ol/xml.makeChildAppender} or
+ * {@link module:ol/xml.makeSimpleNodeFactory}, the top `objectStack` item needs
+ * to have this structure.
+ * @typedef {Object} NodeStackItem
+ * @property {Element} node Node.
+ */
+
+/**
+ * @typedef {function(Element, Array<*>): void} Parser
+ */
+
+/**
+ * @typedef {function(Element, *, Array<*>): void} Serializer
+ */
+
+/**
+ * @type {string}
+ */
+const XML_SCHEMA_INSTANCE_URI =
+  'http://www.w3.org/2001/XMLSchema-instance';
+
+/**
+ * @param {string} namespaceURI Namespace URI.
+ * @param {string} qualifiedName Qualified name.
+ * @return {Element} Node.
+ */
+function createElementNS(namespaceURI, qualifiedName) {
+  return getDocument().createElementNS(namespaceURI, qualifiedName);
+}
+
+/**
+ * Recursively grab all text content of child nodes into a single string.
+ * @param {Node} node Node.
+ * @param {boolean} normalizeWhitespace Normalize whitespace: remove all line
+ * breaks.
+ * @return {string} All text content.
+ * @api
+ */
+function getAllTextContent(node, normalizeWhitespace) {
+  return getAllTextContent_(node, normalizeWhitespace, []).join('');
+}
+
+/**
+ * Recursively grab all text content of child nodes into a single string.
+ * @param {Node} node Node.
+ * @param {boolean} normalizeWhitespace Normalize whitespace: remove all line
+ * breaks.
+ * @param {Array<string>} accumulator Accumulator.
+ * @private
+ * @return {Array<string>} Accumulator.
+ */
+function getAllTextContent_(node, normalizeWhitespace, accumulator) {
+  if (
+    node.nodeType == Node.CDATA_SECTION_NODE ||
+    node.nodeType == Node.TEXT_NODE
+  ) {
+    if (normalizeWhitespace) {
+      accumulator.push(String(node.nodeValue).replace(/(\r\n|\r|\n)/g, ''));
+    } else {
+      accumulator.push(node.nodeValue);
+    }
+  } else {
+    let n;
+    for (n = node.firstChild; n; n = n.nextSibling) {
+      getAllTextContent_(n, normalizeWhitespace, accumulator);
+    }
+  }
+  return accumulator;
+}
+
+/**
+ * @param {Object} object Object.
+ * @return {boolean} Is a document.
+ */
+function isDocument(object) {
+  return 'documentElement' in object;
+}
+
+/**
+ * @param {Element} node Node.
+ * @param {?string} namespaceURI Namespace URI.
+ * @param {string} name Attribute name.
+ * @return {string} Value
+ */
+function getAttributeNS(node, namespaceURI, name) {
+  return node.getAttributeNS(namespaceURI, name) || '';
+}
+
+/**
+ * Parse an XML string to an XML Document.
+ * @param {string} xml XML.
+ * @return {Document} Document.
+ * @api
+ */
+function parse(xml) {
+  return new DOMParser().parseFromString(xml, 'application/xml');
+}
+
+/**
+ * Make an array extender function for extending the array at the top of the
+ * object stack.
+ * @param {function(this: T, Node, Array<*>): (Array<*>|undefined)} valueReader Value reader.
+ * @param {T} [thisArg] The object to use as `this` in `valueReader`.
+ * @return {Parser} Parser.
+ * @template T
+ */
+function makeArrayExtender(valueReader, thisArg) {
+  return (
+    /**
+     * @param {Node} node Node.
+     * @param {Array<*>} objectStack Object stack.
+     */
+    function (node, objectStack) {
+      const value = valueReader.call(
+        thisArg !== undefined ? thisArg : this,
+        node,
+        objectStack
+      );
+      if (value !== undefined) {
+        const array = /** @type {Array<*>} */ (
+          objectStack[objectStack.length - 1]
+        );
+        (0,_array_js__WEBPACK_IMPORTED_MODULE_0__.extend)(array, value);
+      }
+    }
+  );
+}
+
+/**
+ * Make an array pusher function for pushing to the array at the top of the
+ * object stack.
+ * @param {function(this: T, Element, Array<*>): *} valueReader Value reader.
+ * @param {T} [thisArg] The object to use as `this` in `valueReader`.
+ * @return {Parser} Parser.
+ * @template T
+ */
+function makeArrayPusher(valueReader, thisArg) {
+  return (
+    /**
+     * @param {Element} node Node.
+     * @param {Array<*>} objectStack Object stack.
+     */
+    function (node, objectStack) {
+      const value = valueReader.call(
+        thisArg !== undefined ? thisArg : this,
+        node,
+        objectStack
+      );
+      if (value !== undefined) {
+        const array = /** @type {Array<*>} */ (
+          objectStack[objectStack.length - 1]
+        );
+        array.push(value);
+      }
+    }
+  );
+}
+
+/**
+ * Make an object stack replacer function for replacing the object at the
+ * top of the stack.
+ * @param {function(this: T, Node, Array<*>): *} valueReader Value reader.
+ * @param {T} [thisArg] The object to use as `this` in `valueReader`.
+ * @return {Parser} Parser.
+ * @template T
+ */
+function makeReplacer(valueReader, thisArg) {
+  return (
+    /**
+     * @param {Node} node Node.
+     * @param {Array<*>} objectStack Object stack.
+     */
+    function (node, objectStack) {
+      const value = valueReader.call(
+        thisArg !== undefined ? thisArg : this,
+        node,
+        objectStack
+      );
+      if (value !== undefined) {
+        objectStack[objectStack.length - 1] = value;
+      }
+    }
+  );
+}
+
+/**
+ * Make an object property pusher function for adding a property to the
+ * object at the top of the stack.
+ * @param {function(this: T, Element, Array<*>): *} valueReader Value reader.
+ * @param {string} [property] Property.
+ * @param {T} [thisArg] The object to use as `this` in `valueReader`.
+ * @return {Parser} Parser.
+ * @template T
+ */
+function makeObjectPropertyPusher(valueReader, property, thisArg) {
+  return (
+    /**
+     * @param {Element} node Node.
+     * @param {Array<*>} objectStack Object stack.
+     */
+    function (node, objectStack) {
+      const value = valueReader.call(
+        thisArg !== undefined ? thisArg : this,
+        node,
+        objectStack
+      );
+      if (value !== undefined) {
+        const object = /** @type {!Object} */ (
+          objectStack[objectStack.length - 1]
+        );
+        const name = property !== undefined ? property : node.localName;
+        let array;
+        if (name in object) {
+          array = object[name];
+        } else {
+          array = [];
+          object[name] = array;
+        }
+        array.push(value);
+      }
+    }
+  );
+}
+
+/**
+ * Make an object property setter function.
+ * @param {function(this: T, Element, Array<*>): *} valueReader Value reader.
+ * @param {string} [property] Property.
+ * @param {T} [thisArg] The object to use as `this` in `valueReader`.
+ * @return {Parser} Parser.
+ * @template T
+ */
+function makeObjectPropertySetter(valueReader, property, thisArg) {
+  return (
+    /**
+     * @param {Element} node Node.
+     * @param {Array<*>} objectStack Object stack.
+     */
+    function (node, objectStack) {
+      const value = valueReader.call(
+        thisArg !== undefined ? thisArg : this,
+        node,
+        objectStack
+      );
+      if (value !== undefined) {
+        const object = /** @type {!Object} */ (
+          objectStack[objectStack.length - 1]
+        );
+        const name = property !== undefined ? property : node.localName;
+        object[name] = value;
+      }
+    }
+  );
+}
+
+/**
+ * Create a serializer that appends nodes written by its `nodeWriter` to its
+ * designated parent. The parent is the `node` of the
+ * {@link module:ol/xml~NodeStackItem} at the top of the `objectStack`.
+ * @param {function(this: T, Node, V, Array<*>): void} nodeWriter Node writer.
+ * @param {T} [thisArg] The object to use as `this` in `nodeWriter`.
+ * @return {Serializer} Serializer.
+ * @template T, V
+ */
+function makeChildAppender(nodeWriter, thisArg) {
+  return function (node, value, objectStack) {
+    nodeWriter.call(
+      thisArg !== undefined ? thisArg : this,
+      node,
+      value,
+      objectStack
+    );
+    const parent = /** @type {NodeStackItem} */ (
+      objectStack[objectStack.length - 1]
+    );
+    const parentNode = parent.node;
+    parentNode.appendChild(node);
+  };
+}
+
+/**
+ * Create a serializer that calls the provided `nodeWriter` from
+ * {@link module:ol/xml.serialize}. This can be used by the parent writer to have the
+ * `nodeWriter` called with an array of values when the `nodeWriter` was
+ * designed to serialize a single item. An example would be a LineString
+ * geometry writer, which could be reused for writing MultiLineString
+ * geometries.
+ * @param {function(this: T, Element, V, Array<*>): void} nodeWriter Node writer.
+ * @param {T} [thisArg] The object to use as `this` in `nodeWriter`.
+ * @return {Serializer} Serializer.
+ * @template T, V
+ */
+function makeArraySerializer(nodeWriter, thisArg) {
+  let serializersNS, nodeFactory;
+  return function (node, value, objectStack) {
+    if (serializersNS === undefined) {
+      serializersNS = {};
+      const serializers = {};
+      serializers[node.localName] = nodeWriter;
+      serializersNS[node.namespaceURI] = serializers;
+      nodeFactory = makeSimpleNodeFactory(node.localName);
+    }
+    serialize(serializersNS, nodeFactory, value, objectStack);
+  };
+}
+
+/**
+ * Create a node factory which can use the `keys` passed to
+ * {@link module:ol/xml.serialize} or {@link module:ol/xml.pushSerializeAndPop} as node names,
+ * or a fixed node name. The namespace of the created nodes can either be fixed,
+ * or the parent namespace will be used.
+ * @param {string} [fixedNodeName] Fixed node name which will be used for all
+ *     created nodes. If not provided, the 3rd argument to the resulting node
+ *     factory needs to be provided and will be the nodeName.
+ * @param {string} [fixedNamespaceURI] Fixed namespace URI which will be used for
+ *     all created nodes. If not provided, the namespace of the parent node will
+ *     be used.
+ * @return {function(*, Array<*>, string=): (Node|undefined)} Node factory.
+ */
+function makeSimpleNodeFactory(fixedNodeName, fixedNamespaceURI) {
+  return (
+    /**
+     * @param {*} value Value.
+     * @param {Array<*>} objectStack Object stack.
+     * @param {string} [newNodeName] Node name.
+     * @return {Node} Node.
+     */
+    function (value, objectStack, newNodeName) {
+      const context = /** @type {NodeStackItem} */ (
+        objectStack[objectStack.length - 1]
+      );
+      const node = context.node;
+      let nodeName = fixedNodeName;
+      if (nodeName === undefined) {
+        nodeName = newNodeName;
+      }
+
+      const namespaceURI =
+        fixedNamespaceURI !== undefined ? fixedNamespaceURI : node.namespaceURI;
+      return createElementNS(namespaceURI, /** @type {string} */ (nodeName));
+    }
+  );
+}
+
+/**
+ * A node factory that creates a node using the parent's `namespaceURI` and the
+ * `nodeName` passed by {@link module:ol/xml.serialize} or
+ * {@link module:ol/xml.pushSerializeAndPop} to the node factory.
+ * @const
+ * @type {function(*, Array<*>, string=): (Node|undefined)}
+ */
+const OBJECT_PROPERTY_NODE_FACTORY = makeSimpleNodeFactory();
+
+/**
+ * Create an array of `values` to be used with {@link module:ol/xml.serialize} or
+ * {@link module:ol/xml.pushSerializeAndPop}, where `orderedKeys` has to be provided as
+ * `key` argument.
+ * @param {Object<string, *>} object Key-value pairs for the sequence. Keys can
+ *     be a subset of the `orderedKeys`.
+ * @param {Array<string>} orderedKeys Keys in the order of the sequence.
+ * @return {Array<*>} Values in the order of the sequence. The resulting array
+ *     has the same length as the `orderedKeys` array. Values that are not
+ *     present in `object` will be `undefined` in the resulting array.
+ */
+function makeSequence(object, orderedKeys) {
+  const length = orderedKeys.length;
+  const sequence = new Array(length);
+  for (let i = 0; i < length; ++i) {
+    sequence[i] = object[orderedKeys[i]];
+  }
+  return sequence;
+}
+
+/**
+ * Create a namespaced structure, using the same values for each namespace.
+ * This can be used as a starting point for versioned parsers, when only a few
+ * values are version specific.
+ * @param {Array<string>} namespaceURIs Namespace URIs.
+ * @param {T} structure Structure.
+ * @param {Object<string, T>} [structureNS] Namespaced structure to add to.
+ * @return {Object<string, T>} Namespaced structure.
+ * @template T
+ */
+function makeStructureNS(namespaceURIs, structure, structureNS) {
+  structureNS = structureNS !== undefined ? structureNS : {};
+  let i, ii;
+  for (i = 0, ii = namespaceURIs.length; i < ii; ++i) {
+    structureNS[namespaceURIs[i]] = structure;
+  }
+  return structureNS;
+}
+
+/**
+ * Parse a node using the parsers and object stack.
+ * @param {Object<string, Object<string, Parser>>} parsersNS
+ *     Parsers by namespace.
+ * @param {Element} node Node.
+ * @param {Array<*>} objectStack Object stack.
+ * @param {*} [thisArg] The object to use as `this`.
+ */
+function parseNode(parsersNS, node, objectStack, thisArg) {
+  let n;
+  for (n = node.firstElementChild; n; n = n.nextElementSibling) {
+    const parsers = parsersNS[n.namespaceURI];
+    if (parsers !== undefined) {
+      const parser = parsers[n.localName];
+      if (parser !== undefined) {
+        parser.call(thisArg, n, objectStack);
+      }
+    }
+  }
+}
+
+/**
+ * Push an object on top of the stack, parse and return the popped object.
+ * @param {T} object Object.
+ * @param {Object<string, Object<string, Parser>>} parsersNS
+ *     Parsers by namespace.
+ * @param {Element} node Node.
+ * @param {Array<*>} objectStack Object stack.
+ * @param {*} [thisArg] The object to use as `this`.
+ * @return {T} Object.
+ * @template T
+ */
+function pushParseAndPop(object, parsersNS, node, objectStack, thisArg) {
+  objectStack.push(object);
+  parseNode(parsersNS, node, objectStack, thisArg);
+  return /** @type {T} */ (objectStack.pop());
+}
+
+/**
+ * Walk through an array of `values` and call a serializer for each value.
+ * @param {Object<string, Object<string, Serializer>>} serializersNS
+ *     Namespaced serializers.
+ * @param {function(this: T, *, Array<*>, (string|undefined)): (Node|undefined)} nodeFactory
+ *     Node factory. The `nodeFactory` creates the node whose namespace and name
+ *     will be used to choose a node writer from `serializersNS`. This
+ *     separation allows us to decide what kind of node to create, depending on
+ *     the value we want to serialize. An example for this would be different
+ *     geometry writers based on the geometry type.
+ * @param {Array<*>} values Values to serialize. An example would be an array
+ *     of {@link module:ol/Feature~Feature} instances.
+ * @param {Array<*>} objectStack Node stack.
+ * @param {Array<string>} [keys] Keys of the `values`. Will be passed to the
+ *     `nodeFactory`. This is used for serializing object literals where the
+ *     node name relates to the property key. The array length of `keys` has
+ *     to match the length of `values`. For serializing a sequence, `keys`
+ *     determines the order of the sequence.
+ * @param {T} [thisArg] The object to use as `this` for the node factory and
+ *     serializers.
+ * @template T
+ */
+function serialize(
+  serializersNS,
+  nodeFactory,
+  values,
+  objectStack,
+  keys,
+  thisArg
+) {
+  const length = (keys !== undefined ? keys : values).length;
+  let value, node;
+  for (let i = 0; i < length; ++i) {
+    value = values[i];
+    if (value !== undefined) {
+      node = nodeFactory.call(
+        thisArg !== undefined ? thisArg : this,
+        value,
+        objectStack,
+        keys !== undefined ? keys[i] : undefined
+      );
+      if (node !== undefined) {
+        serializersNS[node.namespaceURI][node.localName].call(
+          thisArg,
+          node,
+          value,
+          objectStack
+        );
+      }
+    }
+  }
+}
+
+/**
+ * @param {O} object Object.
+ * @param {Object<string, Object<string, Serializer>>} serializersNS
+ *     Namespaced serializers.
+ * @param {function(this: T, *, Array<*>, (string|undefined)): (Node|undefined)} nodeFactory
+ *     Node factory. The `nodeFactory` creates the node whose namespace and name
+ *     will be used to choose a node writer from `serializersNS`. This
+ *     separation allows us to decide what kind of node to create, depending on
+ *     the value we want to serialize. An example for this would be different
+ *     geometry writers based on the geometry type.
+ * @param {Array<*>} values Values to serialize. An example would be an array
+ *     of {@link module:ol/Feature~Feature} instances.
+ * @param {Array<*>} objectStack Node stack.
+ * @param {Array<string>} [keys] Keys of the `values`. Will be passed to the
+ *     `nodeFactory`. This is used for serializing object literals where the
+ *     node name relates to the property key. The array length of `keys` has
+ *     to match the length of `values`. For serializing a sequence, `keys`
+ *     determines the order of the sequence.
+ * @param {T} [thisArg] The object to use as `this` for the node factory and
+ *     serializers.
+ * @return {O|undefined} Object.
+ * @template O, T
+ */
+function pushSerializeAndPop(
+  object,
+  serializersNS,
+  nodeFactory,
+  values,
+  objectStack,
+  keys,
+  thisArg
+) {
+  objectStack.push(object);
+  serialize(serializersNS, nodeFactory, values, objectStack, keys, thisArg);
+  return /** @type {O|undefined} */ (objectStack.pop());
+}
+
+let xmlSerializer_ = undefined;
+
+/**
+ * Register a XMLSerializer. Can be used  to inject a XMLSerializer
+ * where there is no globally available implementation.
+ *
+ * @param {XMLSerializer} xmlSerializer A XMLSerializer.
+ * @api
+ */
+function registerXMLSerializer(xmlSerializer) {
+  xmlSerializer_ = xmlSerializer;
+}
+
+/**
+ * @return {XMLSerializer} The XMLSerializer.
+ */
+function getXMLSerializer() {
+  if (xmlSerializer_ === undefined && typeof XMLSerializer !== 'undefined') {
+    xmlSerializer_ = new XMLSerializer();
+  }
+  return xmlSerializer_;
+}
+
+let document_ = undefined;
+
+/**
+ * Register a Document to use when creating nodes for XML serializations. Can be used
+ * to inject a Document where there is no globally available implementation.
+ *
+ * @param {Document} document A Document.
+ * @api
+ */
+function registerDocument(document) {
+  document_ = document;
+}
+
+/**
+ * Get a document that should be used when creating nodes for XML serializations.
+ * @return {Document} The document.
+ */
+function getDocument() {
+  if (document_ === undefined && typeof document !== 'undefined') {
+    document_ = document.implementation.createDocument('', '', null);
+  }
+  return document_;
+}
 
 
 /***/ })

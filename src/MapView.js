@@ -11,6 +11,7 @@ import {
   zoomToContent,
 } from './lib';
 import MapFeature from './MapFeature';
+import { createTeFenuaLayer } from './tefenua';
 
 function MapView(props) {
   const { options } = props;
@@ -39,6 +40,14 @@ function MapView(props) {
   useEffect(() => {
     map.addLayer(layer);
     zoomToContent(layer, view);
+
+    createTeFenuaLayer({
+      layer: 'TEFENUA:FOND',
+      matrixSet: 'EPSG:4326',
+    }).then((el) => {
+      map.addLayer(el);
+      return el;
+    });
     return () => {
       map.removeLayer(layer);
     };
@@ -65,8 +74,7 @@ function MapView(props) {
     const pointerMoveListener = (event) => {
       const { pixel } = event;
 
-      // const features = map.getFeaturesAtPixel(pixel);
-      layer.getFeatures(pixel).then((features)=>{
+      layer.getFeatures(pixel).then((features) => {
         highlightLayer.getSource().clear();
         highlightLayer.getSource().addFeatures(features);
 

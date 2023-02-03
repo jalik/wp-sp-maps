@@ -4,12 +4,8 @@ import {
   View,
 } from 'ol';
 import { Point } from 'ol/geom';
-import TileLayer from 'ol/layer/Tile';
 import VectorLayer from 'ol/layer/Vector';
-import {
-  OSM,
-  Vector,
-} from 'ol/source';
+import { Vector } from 'ol/source';
 import {
   Fill,
   RegularShape,
@@ -36,11 +32,7 @@ export function getZoomFromPost(post) {
 
 export function createMap(options = {}) {
   return new Map({
-    layers: [
-      new TileLayer({
-        source: new OSM(),
-      }),
-    ],
+    layers: [],
     view: new View({
       projection: 'EPSG:4326',
       center: [0, 0],

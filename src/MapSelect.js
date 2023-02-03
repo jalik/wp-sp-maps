@@ -1,3 +1,4 @@
+import TileLayer from 'ol/layer/Tile';
 import {
   useEffect,
   useMemo,
@@ -10,6 +11,10 @@ import {
   getLonLatFromPost,
   zoomToContent,
 } from './lib';
+import TeFenua, {
+  createTeFenuaLayer,
+  getOptionsFromCapabilities,
+} from './tefenua';
 
 function MapSelect(props) {
   const { options } = props;
@@ -28,6 +33,14 @@ function MapSelect(props) {
   useEffect(() => {
     map.addLayer(layer);
     zoomToContent(layer, view);
+
+    createTeFenuaLayer({
+      layer: 'TEFENUA:FOND',
+      matrixSet: 'EPSG:4326',
+    }).then((el) => {
+      map.addLayer(el);
+      return el;
+    });
     return () => {
       map.removeLayer(layer);
     };
