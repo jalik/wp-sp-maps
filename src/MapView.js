@@ -59,16 +59,15 @@ function MapView(props) {
     const clickListener = (event) => {
       const { pixel } = event;
 
-      const features = map.getFeaturesAtPixel(pixel);
-      // todo open popover
+      layer.getFeatures(pixel).then((features) => {
+        if (features.length === 1) {
+          const url = features[0].get('guid');
 
-      if (features.length === 1) {
-        const url = features[0].get('guid');
-
-        if (url != null) {
-          window.location.href = url;
+          if (url != null) {
+            window.location.href = url;
+          }
         }
-      }
+      });
     };
 
     const pointerMoveListener = (event) => {
