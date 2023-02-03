@@ -6,6 +6,7 @@ function spmaps_get_meta_keys()
     'latitude',
     'longitude',
     'zoom',
+    'icon_color',
   );
 }
 
@@ -40,6 +41,11 @@ function spmaps_metabox($post)
       'id' => 'meta_zoom',
       'label' => __('Zoom', 'spmaps'),
       'value' => get_post_meta($post->ID, 'zoom', true)
+    ),
+    'icon_color' => array(
+      'id' => 'meta_icon_color',
+      'label' => __('Couleur de l\'icône', 'spmaps'),
+      'value' => get_post_meta($post->ID, 'icon_color', true)
     ),
   );
 

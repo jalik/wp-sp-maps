@@ -38,6 +38,16 @@ export function getZoomFromPost(post) {
   return parseFloat(zoom);
 }
 
+export function getIconColorFromPost(post) {
+  const { metas } = { metas: {}, ...post };
+  const { icon_color } = metas;
+  return icon_color;
+}
+
+export function getIconColor(props, defaultValue = undefined) {
+  return getIconColorFromPost(props) || defaultValue || 'red';
+}
+
 export function createMap(options = {}) {
   return new Map({
     controls: [
@@ -64,6 +74,7 @@ export function createMap(options = {}) {
 export function createFeatureFromPost(post) {
   const lonLat = getLonLatFromPost(post);
   return new Feature({
+    ...post,
     geometry: new Point(lonLat),
     label: post.post_title,
     guid: post.guid,
@@ -96,7 +107,7 @@ export function createHighlightLayer(features, options) {
 export function createIcon(feature, resolution) {
   const radius = 10;
   return new RegularShape({
-    fill: new Fill({ color: 'red' }),
+    fill: new Fill({ color: getIconColor(feature.getProperties()) }),
     radius,
     points: 3,
     angle: 45,
@@ -106,7 +117,7 @@ export function createIcon(feature, resolution) {
 
 export function createText(feature, resolution, options = {}) {
   return new Text({
-    fill: new Fill({ color: 'red' }),
+    fill: new Fill({ color: getIconColor(feature.getProperties()) }),
     text: feature.get('label'),
     font: '14px sans-serif',
     // overflow: true,

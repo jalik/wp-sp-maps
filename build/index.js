@@ -257,6 +257,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "createMap": () => (/* binding */ createMap),
 /* harmony export */   "createText": () => (/* binding */ createText),
 /* harmony export */   "createVectorLayer": () => (/* binding */ createVectorLayer),
+/* harmony export */   "getIconColor": () => (/* binding */ getIconColor),
+/* harmony export */   "getIconColorFromPost": () => (/* binding */ getIconColorFromPost),
 /* harmony export */   "getLonLatFromPost": () => (/* binding */ getLonLatFromPost),
 /* harmony export */   "getZoomFromPost": () => (/* binding */ getZoomFromPost),
 /* harmony export */   "zoomToContent": () => (/* binding */ zoomToContent)
@@ -313,6 +315,22 @@ function getZoomFromPost(post) {
   } = metas;
   return parseFloat(zoom);
 }
+function getIconColorFromPost(post) {
+  const {
+    metas
+  } = {
+    metas: {},
+    ...post
+  };
+  const {
+    icon_color
+  } = metas;
+  return icon_color;
+}
+function getIconColor(props) {
+  let defaultValue = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;
+  return getIconColorFromPost(props) || defaultValue || 'red';
+}
 function createMap() {
   let options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   return new ol__WEBPACK_IMPORTED_MODULE_0__["default"]({
@@ -333,6 +351,7 @@ function createMap() {
 function createFeatureFromPost(post) {
   const lonLat = getLonLatFromPost(post);
   return new ol__WEBPACK_IMPORTED_MODULE_8__["default"]({
+    ...post,
     geometry: new ol_geom__WEBPACK_IMPORTED_MODULE_9__["default"](lonLat),
     label: post.post_title,
     guid: post.guid,
@@ -365,7 +384,7 @@ function createIcon(feature, resolution) {
   const radius = 10;
   return new ol_style__WEBPACK_IMPORTED_MODULE_12__["default"]({
     fill: new ol_style__WEBPACK_IMPORTED_MODULE_13__["default"]({
-      color: 'red'
+      color: getIconColor(feature.getProperties())
     }),
     radius,
     points: 3,
@@ -377,7 +396,7 @@ function createText(feature, resolution) {
   let options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
   return new ol_style__WEBPACK_IMPORTED_MODULE_14__["default"]({
     fill: new ol_style__WEBPACK_IMPORTED_MODULE_13__["default"]({
-      color: 'red'
+      color: getIconColor(feature.getProperties())
     }),
     text: feature.get('label'),
     font: '14px sans-serif',
