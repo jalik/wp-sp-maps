@@ -262,15 +262,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "zoomToContent": () => (/* binding */ zoomToContent)
 /* harmony export */ });
 /* harmony import */ var ol__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ol */ "./node_modules/ol/Map.js");
-/* harmony import */ var ol__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ol */ "./node_modules/ol/View.js");
-/* harmony import */ var ol__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ol */ "./node_modules/ol/Feature.js");
-/* harmony import */ var ol_geom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ol/geom */ "./node_modules/ol/geom/Point.js");
-/* harmony import */ var ol_layer_Vector__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ol/layer/Vector */ "./node_modules/ol/layer/Vector.js");
-/* harmony import */ var ol_source__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ol/source */ "./node_modules/ol/source/Vector.js");
-/* harmony import */ var ol_style__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ol/style */ "./node_modules/ol/style/RegularShape.js");
-/* harmony import */ var ol_style__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ol/style */ "./node_modules/ol/style/Fill.js");
-/* harmony import */ var ol_style__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ol/style */ "./node_modules/ol/style/Text.js");
-/* harmony import */ var ol_style__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ol/style */ "./node_modules/ol/style/Style.js");
+/* harmony import */ var ol__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ol */ "./node_modules/ol/View.js");
+/* harmony import */ var ol__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ol */ "./node_modules/ol/Feature.js");
+/* harmony import */ var ol_control__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ol/control */ "./node_modules/ol/control/Attribution.js");
+/* harmony import */ var ol_control__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ol/control */ "./node_modules/ol/control/FullScreen.js");
+/* harmony import */ var ol_control__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ol/control */ "./node_modules/ol/control/Rotate.js");
+/* harmony import */ var ol_control__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ol/control */ "./node_modules/ol/control/ScaleLine.js");
+/* harmony import */ var ol_control__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ol/control */ "./node_modules/ol/control/Zoom.js");
+/* harmony import */ var ol_geom__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ol/geom */ "./node_modules/ol/geom/Point.js");
+/* harmony import */ var ol_interaction__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ol/interaction */ "./node_modules/ol/interaction/defaults.js");
+/* harmony import */ var ol_layer_Vector__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ol/layer/Vector */ "./node_modules/ol/layer/Vector.js");
+/* harmony import */ var ol_source__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ol/source */ "./node_modules/ol/source/Vector.js");
+/* harmony import */ var ol_style__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ol/style */ "./node_modules/ol/style/RegularShape.js");
+/* harmony import */ var ol_style__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ol/style */ "./node_modules/ol/style/Fill.js");
+/* harmony import */ var ol_style__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ol/style */ "./node_modules/ol/style/Text.js");
+/* harmony import */ var ol_style__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ol/style */ "./node_modules/ol/style/Style.js");
+
+
 
 
 
@@ -308,8 +316,13 @@ function getZoomFromPost(post) {
 function createMap() {
   let options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   return new ol__WEBPACK_IMPORTED_MODULE_0__["default"]({
+    controls: [new ol_control__WEBPACK_IMPORTED_MODULE_1__["default"](), new ol_control__WEBPACK_IMPORTED_MODULE_2__["default"](), new ol_control__WEBPACK_IMPORTED_MODULE_3__["default"](), new ol_control__WEBPACK_IMPORTED_MODULE_4__["default"](), new ol_control__WEBPACK_IMPORTED_MODULE_5__["default"]()],
+    interactions: (0,ol_interaction__WEBPACK_IMPORTED_MODULE_6__.defaults)({
+      mouseWheelZoom: false,
+      onFocusOnly: true
+    }),
     layers: [],
-    view: new ol__WEBPACK_IMPORTED_MODULE_1__["default"]({
+    view: new ol__WEBPACK_IMPORTED_MODULE_7__["default"]({
       projection: 'EPSG:4326',
       center: [0, 0],
       zoom: 3
@@ -319,8 +332,8 @@ function createMap() {
 }
 function createFeatureFromPost(post) {
   const lonLat = getLonLatFromPost(post);
-  return new ol__WEBPACK_IMPORTED_MODULE_2__["default"]({
-    geometry: new ol_geom__WEBPACK_IMPORTED_MODULE_3__["default"](lonLat),
+  return new ol__WEBPACK_IMPORTED_MODULE_8__["default"]({
+    geometry: new ol_geom__WEBPACK_IMPORTED_MODULE_9__["default"](lonLat),
     label: post.post_title,
     guid: post.guid,
     slug: post.post_name,
@@ -329,9 +342,9 @@ function createFeatureFromPost(post) {
   });
 }
 function createVectorLayer(features, options) {
-  return new ol_layer_Vector__WEBPACK_IMPORTED_MODULE_4__["default"]({
+  return new ol_layer_Vector__WEBPACK_IMPORTED_MODULE_10__["default"]({
     ...options,
-    source: new ol_source__WEBPACK_IMPORTED_MODULE_5__["default"]({
+    source: new ol_source__WEBPACK_IMPORTED_MODULE_11__["default"]({
       features: features.filter(el => el != null)
     }),
     style: createDefaultStyle,
@@ -339,9 +352,9 @@ function createVectorLayer(features, options) {
   });
 }
 function createHighlightLayer(features, options) {
-  return new ol_layer_Vector__WEBPACK_IMPORTED_MODULE_4__["default"]({
+  return new ol_layer_Vector__WEBPACK_IMPORTED_MODULE_10__["default"]({
     ...options,
-    source: new ol_source__WEBPACK_IMPORTED_MODULE_5__["default"]({
+    source: new ol_source__WEBPACK_IMPORTED_MODULE_11__["default"]({
       features
     }),
     style: createHighlightStyle,
@@ -350,8 +363,8 @@ function createHighlightLayer(features, options) {
 }
 function createIcon(feature, resolution) {
   const radius = 10;
-  return new ol_style__WEBPACK_IMPORTED_MODULE_6__["default"]({
-    fill: new ol_style__WEBPACK_IMPORTED_MODULE_7__["default"]({
+  return new ol_style__WEBPACK_IMPORTED_MODULE_12__["default"]({
+    fill: new ol_style__WEBPACK_IMPORTED_MODULE_13__["default"]({
       color: 'red'
     }),
     radius,
@@ -362,8 +375,8 @@ function createIcon(feature, resolution) {
 }
 function createText(feature, resolution) {
   let options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-  return new ol_style__WEBPACK_IMPORTED_MODULE_8__["default"]({
-    fill: new ol_style__WEBPACK_IMPORTED_MODULE_7__["default"]({
+  return new ol_style__WEBPACK_IMPORTED_MODULE_14__["default"]({
+    fill: new ol_style__WEBPACK_IMPORTED_MODULE_13__["default"]({
       color: 'red'
     }),
     text: feature.get('label'),
@@ -378,9 +391,9 @@ function createDefaultStyle(feature, resolution) {
   const text = createText(feature, resolution, {
     offsetY: image.getRadius() * -2.5
   });
-  return [new ol_style__WEBPACK_IMPORTED_MODULE_9__["default"]({
+  return [new ol_style__WEBPACK_IMPORTED_MODULE_15__["default"]({
     image
-  }), new ol_style__WEBPACK_IMPORTED_MODULE_9__["default"]({
+  }), new ol_style__WEBPACK_IMPORTED_MODULE_15__["default"]({
     text
   })];
 }
@@ -389,14 +402,14 @@ function createHighlightStyle(feature, resolution) {
   const text = createText(feature, resolution, {
     offsetY: image.getRadius() * -2.5
   });
-  const fill = new ol_style__WEBPACK_IMPORTED_MODULE_7__["default"]({
+  const fill = new ol_style__WEBPACK_IMPORTED_MODULE_13__["default"]({
     color: 'black'
   });
   image.setFill(fill);
   text.setFill(fill);
-  return [new ol_style__WEBPACK_IMPORTED_MODULE_9__["default"]({
+  return [new ol_style__WEBPACK_IMPORTED_MODULE_15__["default"]({
     image
-  }), new ol_style__WEBPACK_IMPORTED_MODULE_9__["default"]({
+  }), new ol_style__WEBPACK_IMPORTED_MODULE_15__["default"]({
     text
   })];
 }
@@ -9644,6 +9657,423 @@ class Control extends _Object_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
 
 /***/ }),
 
+/***/ "./node_modules/ol/control/FullScreen.js":
+/*!***********************************************!*\
+  !*** ./node_modules/ol/control/FullScreen.js ***!
+  \***********************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Control_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Control.js */ "./node_modules/ol/control/Control.js");
+/* harmony import */ var _events_EventType_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../events/EventType.js */ "./node_modules/ol/events/EventType.js");
+/* harmony import */ var _MapProperty_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../MapProperty.js */ "./node_modules/ol/MapProperty.js");
+/* harmony import */ var _css_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../css.js */ "./node_modules/ol/css.js");
+/* harmony import */ var _events_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../events.js */ "./node_modules/ol/events.js");
+/* harmony import */ var _dom_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../dom.js */ "./node_modules/ol/dom.js");
+/**
+ * @module ol/control/FullScreen
+ */
+
+
+
+
+
+
+
+const events = [
+  'fullscreenchange',
+  'webkitfullscreenchange',
+  'MSFullscreenChange',
+];
+
+/**
+ * @enum {string}
+ */
+const FullScreenEventType = {
+  /**
+   * Triggered after the map entered fullscreen.
+   * @event FullScreenEventType#enterfullscreen
+   * @api
+   */
+  ENTERFULLSCREEN: 'enterfullscreen',
+
+  /**
+   * Triggered after the map leave fullscreen.
+   * @event FullScreenEventType#leavefullscreen
+   * @api
+   */
+  LEAVEFULLSCREEN: 'leavefullscreen',
+};
+
+/***
+ * @template Return
+ * @typedef {import("../Observable").OnSignature<import("../Observable").EventTypes|
+ *     'enterfullscreen'|'leavefullscreen', import("../events/Event.js").default, Return> &
+ *   import("../Observable").OnSignature<import("../ObjectEventType").Types, import("../Object").ObjectEvent, Return> &
+ *   import("../Observable").CombinedOnSignature<import("../Observable").EventTypes|
+ *     'enterfullscreen'|'leavefullscreen'|import("../ObjectEventType").Types, Return>} FullScreenOnSignature
+ */
+
+/**
+ * @typedef {Object} Options
+ * @property {string} [className='ol-full-screen'] CSS class name.
+ * @property {string|Text|HTMLElement} [label='\u2922'] Text label to use for the button.
+ * Instead of text, also an element (e.g. a `span` element) can be used.
+ * @property {string|Text|HTMLElement} [labelActive='\u00d7'] Text label to use for the
+ * button when full-screen is active.
+ * Instead of text, also an element (e.g. a `span` element) can be used.
+ * @property {string} [activeClassName=className + '-true'] CSS class name for the button
+ * when full-screen is active.
+ * @property {string} [inactiveClassName=className + '-false'] CSS class name for the button
+ * when full-screen is inactive.
+ * @property {string} [tipLabel='Toggle full-screen'] Text label to use for the button tip.
+ * @property {boolean} [keys=false] Full keyboard access.
+ * @property {HTMLElement|string} [target] Specify a target if you want the
+ * control to be rendered outside of the map's viewport.
+ * @property {HTMLElement|string} [source] The element to be displayed
+ * fullscreen. When not provided, the element containing the map viewport will
+ * be displayed fullscreen.
+ */
+
+/**
+ * @classdesc
+ * Provides a button that when clicked fills up the full screen with the map.
+ * The full screen source element is by default the element containing the map viewport unless
+ * overridden by providing the `source` option. In which case, the dom
+ * element introduced using this parameter will be displayed in full screen.
+ *
+ * When in full screen mode, a close button is shown to exit full screen mode.
+ * The [Fullscreen API](https://www.w3.org/TR/fullscreen/) is used to
+ * toggle the map in full screen mode.
+ *
+ * @fires FullScreenEventType#enterfullscreen
+ * @fires FullScreenEventType#leavefullscreen
+ * @api
+ */
+class FullScreen extends _Control_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
+  /**
+   * @param {Options} [options] Options.
+   */
+  constructor(options) {
+    options = options ? options : {};
+
+    super({
+      element: document.createElement('div'),
+      target: options.target,
+    });
+
+    /***
+     * @type {FullScreenOnSignature<import("../events").EventsKey>}
+     */
+    this.on;
+
+    /***
+     * @type {FullScreenOnSignature<import("../events").EventsKey>}
+     */
+    this.once;
+
+    /***
+     * @type {FullScreenOnSignature<void>}
+     */
+    this.un;
+
+    /**
+     * @private
+     * @type {boolean}
+     */
+    this.keys_ = options.keys !== undefined ? options.keys : false;
+
+    /**
+     * @private
+     * @type {HTMLElement|string|undefined}
+     */
+    this.source_ = options.source;
+
+    /**
+     * @type {boolean}
+     * @private
+     */
+    this.isInFullscreen_ = false;
+
+    /**
+     * @private
+     */
+    this.boundHandleMapTargetChange_ = this.handleMapTargetChange_.bind(this);
+
+    /**
+     * @private
+     * @type {string}
+     */
+    this.cssClassName_ =
+      options.className !== undefined ? options.className : 'ol-full-screen';
+
+    /**
+     * @private
+     * @type {Array<import("../events.js").EventsKey>}
+     */
+    this.documentListeners_ = [];
+
+    /**
+     * @private
+     * @type {Array<string>}
+     */
+    this.activeClassName_ =
+      options.activeClassName !== undefined
+        ? options.activeClassName.split(' ')
+        : [this.cssClassName_ + '-true'];
+
+    /**
+     * @private
+     * @type {Array<string>}
+     */
+    this.inactiveClassName_ =
+      options.inactiveClassName !== undefined
+        ? options.inactiveClassName.split(' ')
+        : [this.cssClassName_ + '-false'];
+
+    const label = options.label !== undefined ? options.label : '\u2922';
+
+    /**
+     * @private
+     * @type {Text|HTMLElement}
+     */
+    this.labelNode_ =
+      typeof label === 'string' ? document.createTextNode(label) : label;
+
+    const labelActive =
+      options.labelActive !== undefined ? options.labelActive : '\u00d7';
+
+    /**
+     * @private
+     * @type {Text|HTMLElement}
+     */
+    this.labelActiveNode_ =
+      typeof labelActive === 'string'
+        ? document.createTextNode(labelActive)
+        : labelActive;
+
+    const tipLabel = options.tipLabel ? options.tipLabel : 'Toggle full-screen';
+
+    /**
+     * @private
+     * @type {HTMLElement}
+     */
+    this.button_ = document.createElement('button');
+    this.button_.title = tipLabel;
+    this.button_.setAttribute('type', 'button');
+    this.button_.appendChild(this.labelNode_);
+    this.button_.addEventListener(
+      _events_EventType_js__WEBPACK_IMPORTED_MODULE_1__["default"].CLICK,
+      this.handleClick_.bind(this),
+      false
+    );
+    this.setClassName_(this.button_, this.isInFullscreen_);
+
+    this.element.className = `${this.cssClassName_} ${_css_js__WEBPACK_IMPORTED_MODULE_2__.CLASS_UNSELECTABLE} ${_css_js__WEBPACK_IMPORTED_MODULE_2__.CLASS_CONTROL}`;
+    this.element.appendChild(this.button_);
+  }
+
+  /**
+   * @param {MouseEvent} event The event to handle
+   * @private
+   */
+  handleClick_(event) {
+    event.preventDefault();
+    this.handleFullScreen_();
+  }
+
+  /**
+   * @private
+   */
+  handleFullScreen_() {
+    const map = this.getMap();
+    if (!map) {
+      return;
+    }
+    const doc = map.getOwnerDocument();
+    if (!isFullScreenSupported(doc)) {
+      return;
+    }
+    if (isFullScreen(doc)) {
+      exitFullScreen(doc);
+    } else {
+      let element;
+      if (this.source_) {
+        element =
+          typeof this.source_ === 'string'
+            ? doc.getElementById(this.source_)
+            : this.source_;
+      } else {
+        element = map.getTargetElement();
+      }
+      if (this.keys_) {
+        requestFullScreenWithKeys(element);
+      } else {
+        requestFullScreen(element);
+      }
+    }
+  }
+
+  /**
+   * @private
+   */
+  handleFullScreenChange_() {
+    const map = this.getMap();
+    if (!map) {
+      return;
+    }
+    const wasInFullscreen = this.isInFullscreen_;
+    this.isInFullscreen_ = isFullScreen(map.getOwnerDocument());
+    if (wasInFullscreen !== this.isInFullscreen_) {
+      this.setClassName_(this.button_, this.isInFullscreen_);
+      if (this.isInFullscreen_) {
+        (0,_dom_js__WEBPACK_IMPORTED_MODULE_3__.replaceNode)(this.labelActiveNode_, this.labelNode_);
+        this.dispatchEvent(FullScreenEventType.ENTERFULLSCREEN);
+      } else {
+        (0,_dom_js__WEBPACK_IMPORTED_MODULE_3__.replaceNode)(this.labelNode_, this.labelActiveNode_);
+        this.dispatchEvent(FullScreenEventType.LEAVEFULLSCREEN);
+      }
+      map.updateSize();
+    }
+  }
+
+  /**
+   * @param {HTMLElement} element Target element
+   * @param {boolean} fullscreen True if fullscreen class name should be active
+   * @private
+   */
+  setClassName_(element, fullscreen) {
+    if (fullscreen) {
+      element.classList.remove(...this.inactiveClassName_);
+      element.classList.add(...this.activeClassName_);
+    } else {
+      element.classList.remove(...this.activeClassName_);
+      element.classList.add(...this.inactiveClassName_);
+    }
+  }
+
+  /**
+   * Remove the control from its current map and attach it to the new map.
+   * Pass `null` to just remove the control from the current map.
+   * Subclasses may set up event handlers to get notified about changes to
+   * the map here.
+   * @param {import("../Map.js").default|null} map Map.
+   * @api
+   */
+  setMap(map) {
+    const oldMap = this.getMap();
+    if (oldMap) {
+      oldMap.removeChangeListener(
+        _MapProperty_js__WEBPACK_IMPORTED_MODULE_4__["default"].TARGET,
+        this.boundHandleMapTargetChange_
+      );
+    }
+
+    super.setMap(map);
+
+    this.handleMapTargetChange_();
+    if (map) {
+      map.addChangeListener(
+        _MapProperty_js__WEBPACK_IMPORTED_MODULE_4__["default"].TARGET,
+        this.boundHandleMapTargetChange_
+      );
+    }
+  }
+
+  /**
+   * @private
+   */
+  handleMapTargetChange_() {
+    const listeners = this.documentListeners_;
+    for (let i = 0, ii = listeners.length; i < ii; ++i) {
+      (0,_events_js__WEBPACK_IMPORTED_MODULE_5__.unlistenByKey)(listeners[i]);
+    }
+    listeners.length = 0;
+
+    const map = this.getMap();
+    if (map) {
+      const doc = map.getOwnerDocument();
+      if (isFullScreenSupported(doc)) {
+        this.element.classList.remove(_css_js__WEBPACK_IMPORTED_MODULE_2__.CLASS_UNSUPPORTED);
+      } else {
+        this.element.classList.add(_css_js__WEBPACK_IMPORTED_MODULE_2__.CLASS_UNSUPPORTED);
+      }
+
+      for (let i = 0, ii = events.length; i < ii; ++i) {
+        listeners.push(
+          (0,_events_js__WEBPACK_IMPORTED_MODULE_5__.listen)(doc, events[i], this.handleFullScreenChange_, this)
+        );
+      }
+      this.handleFullScreenChange_();
+    }
+  }
+}
+
+/**
+ * @param {Document} doc The root document to check.
+ * @return {boolean} Fullscreen is supported by the current platform.
+ */
+function isFullScreenSupported(doc) {
+  const body = doc.body;
+  return !!(
+    body['webkitRequestFullscreen'] ||
+    (body.requestFullscreen && doc.fullscreenEnabled)
+  );
+}
+
+/**
+ * @param {Document} doc The root document to check.
+ * @return {boolean} Element is currently in fullscreen.
+ */
+function isFullScreen(doc) {
+  return !!(doc['webkitIsFullScreen'] || doc.fullscreenElement);
+}
+
+/**
+ * Request to fullscreen an element.
+ * @param {HTMLElement} element Element to request fullscreen
+ */
+function requestFullScreen(element) {
+  if (element.requestFullscreen) {
+    element.requestFullscreen();
+  } else if (element['webkitRequestFullscreen']) {
+    element['webkitRequestFullscreen']();
+  }
+}
+
+/**
+ * Request to fullscreen an element with keyboard input.
+ * @param {HTMLElement} element Element to request fullscreen
+ */
+function requestFullScreenWithKeys(element) {
+  if (element['webkitRequestFullscreen']) {
+    element['webkitRequestFullscreen']();
+  } else {
+    requestFullScreen(element);
+  }
+}
+
+/**
+ * Exit fullscreen.
+ * @param {Document} doc The document to exit fullscren from
+ */
+function exitFullScreen(doc) {
+  if (doc.exitFullscreen) {
+    doc.exitFullscreen();
+  } else if (doc['webkitExitFullscreen']) {
+    doc['webkitExitFullscreen']();
+  }
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (FullScreen);
+
+
+/***/ }),
+
 /***/ "./node_modules/ol/control/Rotate.js":
 /*!*******************************************!*\
   !*** ./node_modules/ol/control/Rotate.js ***!
@@ -9841,6 +10271,507 @@ class Rotate extends _Control_js__WEBPACK_IMPORTED_MODULE_0__["default"] {
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Rotate);
+
+
+/***/ }),
+
+/***/ "./node_modules/ol/control/ScaleLine.js":
+/*!**********************************************!*\
+  !*** ./node_modules/ol/control/ScaleLine.js ***!
+  \**********************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Control_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Control.js */ "./node_modules/ol/control/Control.js");
+/* harmony import */ var _css_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../css.js */ "./node_modules/ol/css.js");
+/* harmony import */ var _proj_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../proj.js */ "./node_modules/ol/proj.js");
+/* harmony import */ var _asserts_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../asserts.js */ "./node_modules/ol/asserts.js");
+/**
+ * @module ol/control/ScaleLine
+ */
+
+
+
+
+
+/**
+ * @type {string}
+ */
+const UNITS_PROP = 'units';
+
+/**
+ * @typedef {'degrees' | 'imperial' | 'nautical' | 'metric' | 'us'} Units
+ * Units for the scale line.
+ */
+
+/**
+ * @const
+ * @type {Array<number>}
+ */
+const LEADING_DIGITS = [1, 2, 5];
+
+/**
+ * @const
+ * @type {number}
+ */
+const DEFAULT_DPI = 25.4 / 0.28;
+
+/***
+ * @template Return
+ * @typedef {import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> &
+ *   import("../Observable").OnSignature<import("../ObjectEventType").Types|
+ *     'change:units', import("../Object").ObjectEvent, Return> &
+ *   import("../Observable").CombinedOnSignature<import("../Observable").EventTypes|import("../ObjectEventType").Types
+ *     |'change:units', Return>} ScaleLineOnSignature
+ */
+
+/**
+ * @typedef {Object} Options
+ * @property {string} [className] CSS class name. The default is `ol-scale-bar` when configured with
+ * `bar: true`. Otherwise the default is `ol-scale-line`.
+ * @property {number} [minWidth=64] Minimum width in pixels at the OGC default dpi. The width will be
+ * adjusted to match the dpi used.
+ * @property {number} [maxWidth] Maximum width in pixels at the OGC default dpi. The width will be
+ * adjusted to match the dpi used.
+ * @property {function(import("../MapEvent.js").default):void} [render] Function called when the control
+ * should be re-rendered. This is called in a `requestAnimationFrame` callback.
+ * @property {HTMLElement|string} [target] Specify a target if you want the control
+ * to be rendered outside of the map's viewport.
+ * @property {Units} [units='metric'] Units.
+ * @property {boolean} [bar=false] Render scalebars instead of a line.
+ * @property {number} [steps=4] Number of steps the scalebar should use. Use even numbers
+ * for best results. Only applies when `bar` is `true`.
+ * @property {boolean} [text=false] Render the text scale above of the scalebar. Only applies
+ * when `bar` is `true`.
+ * @property {number|undefined} [dpi=undefined] dpi of output device such as printer. Only applies
+ * when `bar` is `true`. If undefined the OGC default screen pixel size of 0.28mm will be assumed.
+ */
+
+/**
+ * @classdesc
+ * A control displaying rough y-axis distances, calculated for the center of the
+ * viewport. For conformal projections (e.g. EPSG:3857, the default view
+ * projection in OpenLayers), the scale is valid for all directions.
+ * No scale line will be shown when the y-axis distance of a pixel at the
+ * viewport center cannot be calculated in the view projection.
+ * By default the scale line will show in the bottom left portion of the map,
+ * but this can be changed by using the css selector `.ol-scale-line`.
+ * When specifying `bar` as `true`, a scalebar will be rendered instead
+ * of a scaleline.
+ *
+ * @api
+ */
+class ScaleLine extends _Control_js__WEBPACK_IMPORTED_MODULE_1__["default"] {
+  /**
+   * @param {Options} [options] Scale line options.
+   */
+  constructor(options) {
+    options = options ? options : {};
+
+    const element = document.createElement('div');
+    element.style.pointerEvents = 'none';
+
+    super({
+      element: element,
+      render: options.render,
+      target: options.target,
+    });
+
+    /***
+     * @type {ScaleLineOnSignature<import("../events").EventsKey>}
+     */
+    this.on;
+
+    /***
+     * @type {ScaleLineOnSignature<import("../events").EventsKey>}
+     */
+    this.once;
+
+    /***
+     * @type {ScaleLineOnSignature<void>}
+     */
+    this.un;
+
+    const className =
+      options.className !== undefined
+        ? options.className
+        : options.bar
+        ? 'ol-scale-bar'
+        : 'ol-scale-line';
+
+    /**
+     * @private
+     * @type {HTMLElement}
+     */
+    this.innerElement_ = document.createElement('div');
+    this.innerElement_.className = className + '-inner';
+
+    this.element.className = className + ' ' + _css_js__WEBPACK_IMPORTED_MODULE_2__.CLASS_UNSELECTABLE;
+    this.element.appendChild(this.innerElement_);
+
+    /**
+     * @private
+     * @type {?import("../View.js").State}
+     */
+    this.viewState_ = null;
+
+    /**
+     * @private
+     * @type {number}
+     */
+    this.minWidth_ = options.minWidth !== undefined ? options.minWidth : 64;
+
+    /**
+     * @private
+     * @type {number|undefined}
+     */
+    this.maxWidth_ = options.maxWidth;
+
+    /**
+     * @private
+     * @type {boolean}
+     */
+    this.renderedVisible_ = false;
+
+    /**
+     * @private
+     * @type {number|undefined}
+     */
+    this.renderedWidth_ = undefined;
+
+    /**
+     * @private
+     * @type {string}
+     */
+    this.renderedHTML_ = '';
+
+    this.addChangeListener(UNITS_PROP, this.handleUnitsChanged_);
+
+    this.setUnits(options.units || 'metric');
+
+    /**
+     * @private
+     * @type {boolean}
+     */
+    this.scaleBar_ = options.bar || false;
+
+    /**
+     * @private
+     * @type {number}
+     */
+    this.scaleBarSteps_ = options.steps || 4;
+
+    /**
+     * @private
+     * @type {boolean}
+     */
+    this.scaleBarText_ = options.text || false;
+
+    /**
+     * @private
+     * @type {number|undefined}
+     */
+    this.dpi_ = options.dpi || undefined;
+  }
+
+  /**
+   * Return the units to use in the scale line.
+   * @return {Units} The units
+   * to use in the scale line.
+   * @observable
+   * @api
+   */
+  getUnits() {
+    return this.get(UNITS_PROP);
+  }
+
+  /**
+   * @private
+   */
+  handleUnitsChanged_() {
+    this.updateElement_();
+  }
+
+  /**
+   * Set the units to use in the scale line.
+   * @param {Units} units The units to use in the scale line.
+   * @observable
+   * @api
+   */
+  setUnits(units) {
+    this.set(UNITS_PROP, units);
+  }
+
+  /**
+   * Specify the dpi of output device such as printer.
+   * @param {number|undefined} dpi The dpi of output device.
+   * @api
+   */
+  setDpi(dpi) {
+    this.dpi_ = dpi;
+  }
+
+  /**
+   * @private
+   */
+  updateElement_() {
+    const viewState = this.viewState_;
+
+    if (!viewState) {
+      if (this.renderedVisible_) {
+        this.element.style.display = 'none';
+        this.renderedVisible_ = false;
+      }
+      return;
+    }
+
+    const center = viewState.center;
+    const projection = viewState.projection;
+    const units = this.getUnits();
+    const pointResolutionUnits = units == 'degrees' ? 'degrees' : 'm';
+    let pointResolution = (0,_proj_js__WEBPACK_IMPORTED_MODULE_0__.getPointResolution)(
+      projection,
+      viewState.resolution,
+      center,
+      pointResolutionUnits
+    );
+
+    const minWidth =
+      (this.minWidth_ * (this.dpi_ || DEFAULT_DPI)) / DEFAULT_DPI;
+
+    const maxWidth =
+      this.maxWidth_ !== undefined
+        ? (this.maxWidth_ * (this.dpi_ || DEFAULT_DPI)) / DEFAULT_DPI
+        : undefined;
+
+    let nominalCount = minWidth * pointResolution;
+    let suffix = '';
+    if (units == 'degrees') {
+      const metersPerDegree = _proj_js__WEBPACK_IMPORTED_MODULE_0__.METERS_PER_UNIT.degrees;
+      nominalCount *= metersPerDegree;
+      if (nominalCount < metersPerDegree / 60) {
+        suffix = '\u2033'; // seconds
+        pointResolution *= 3600;
+      } else if (nominalCount < metersPerDegree) {
+        suffix = '\u2032'; // minutes
+        pointResolution *= 60;
+      } else {
+        suffix = '\u00b0'; // degrees
+      }
+    } else if (units == 'imperial') {
+      if (nominalCount < 0.9144) {
+        suffix = 'in';
+        pointResolution /= 0.0254;
+      } else if (nominalCount < 1609.344) {
+        suffix = 'ft';
+        pointResolution /= 0.3048;
+      } else {
+        suffix = 'mi';
+        pointResolution /= 1609.344;
+      }
+    } else if (units == 'nautical') {
+      pointResolution /= 1852;
+      suffix = 'NM';
+    } else if (units == 'metric') {
+      if (nominalCount < 0.001) {
+        suffix = 'μm';
+        pointResolution *= 1000000;
+      } else if (nominalCount < 1) {
+        suffix = 'mm';
+        pointResolution *= 1000;
+      } else if (nominalCount < 1000) {
+        suffix = 'm';
+      } else {
+        suffix = 'km';
+        pointResolution /= 1000;
+      }
+    } else if (units == 'us') {
+      if (nominalCount < 0.9144) {
+        suffix = 'in';
+        pointResolution *= 39.37;
+      } else if (nominalCount < 1609.344) {
+        suffix = 'ft';
+        pointResolution /= 0.30480061;
+      } else {
+        suffix = 'mi';
+        pointResolution /= 1609.3472;
+      }
+    } else {
+      (0,_asserts_js__WEBPACK_IMPORTED_MODULE_3__.assert)(false, 33); // Invalid units
+    }
+
+    let i = 3 * Math.floor(Math.log(minWidth * pointResolution) / Math.log(10));
+    let count, width, decimalCount;
+    let previousCount, previousWidth, previousDecimalCount;
+    while (true) {
+      decimalCount = Math.floor(i / 3);
+      const decimal = Math.pow(10, decimalCount);
+      count = LEADING_DIGITS[((i % 3) + 3) % 3] * decimal;
+      width = Math.round(count / pointResolution);
+      if (isNaN(width)) {
+        this.element.style.display = 'none';
+        this.renderedVisible_ = false;
+        return;
+      }
+      if (maxWidth !== undefined && width >= maxWidth) {
+        count = previousCount;
+        width = previousWidth;
+        decimalCount = previousDecimalCount;
+        break;
+      } else if (width >= minWidth) {
+        break;
+      }
+      previousCount = count;
+      previousWidth = width;
+      previousDecimalCount = decimalCount;
+      ++i;
+    }
+    const html = this.scaleBar_
+      ? this.createScaleBar(width, count, suffix)
+      : count.toFixed(decimalCount < 0 ? -decimalCount : 0) + ' ' + suffix;
+
+    if (this.renderedHTML_ != html) {
+      this.innerElement_.innerHTML = html;
+      this.renderedHTML_ = html;
+    }
+
+    if (this.renderedWidth_ != width) {
+      this.innerElement_.style.width = width + 'px';
+      this.renderedWidth_ = width;
+    }
+
+    if (!this.renderedVisible_) {
+      this.element.style.display = '';
+      this.renderedVisible_ = true;
+    }
+  }
+
+  /**
+   * @private
+   * @param {number} width The current width of the scalebar.
+   * @param {number} scale The current scale.
+   * @param {string} suffix The suffix to append to the scale text.
+   * @return {string} The stringified HTML of the scalebar.
+   */
+  createScaleBar(width, scale, suffix) {
+    const resolutionScale = this.getScaleForResolution();
+    const mapScale =
+      resolutionScale < 1
+        ? Math.round(1 / resolutionScale).toLocaleString() + ' : 1'
+        : '1 : ' + Math.round(resolutionScale).toLocaleString();
+    const steps = this.scaleBarSteps_;
+    const stepWidth = width / steps;
+    const scaleSteps = [this.createMarker('absolute')];
+    for (let i = 0; i < steps; ++i) {
+      const cls =
+        i % 2 === 0 ? 'ol-scale-singlebar-odd' : 'ol-scale-singlebar-even';
+      scaleSteps.push(
+        '<div>' +
+          '<div ' +
+          `class="ol-scale-singlebar ${cls}" ` +
+          `style="width: ${stepWidth}px;"` +
+          '>' +
+          '</div>' +
+          this.createMarker('relative') +
+          // render text every second step, except when only 2 steps
+          (i % 2 === 0 || steps === 2
+            ? this.createStepText(i, width, false, scale, suffix)
+            : '') +
+          '</div>'
+      );
+    }
+    // render text at the end
+    scaleSteps.push(this.createStepText(steps, width, true, scale, suffix));
+
+    const scaleBarText = this.scaleBarText_
+      ? `<div class="ol-scale-text" style="width: ${width}px;">` +
+        mapScale +
+        '</div>'
+      : '';
+    return scaleBarText + scaleSteps.join('');
+  }
+
+  /**
+   * Creates a marker at given position
+   * @param {'absolute'|'relative'} position The position, absolute or relative
+   * @return {string} The stringified div containing the marker
+   */
+  createMarker(position) {
+    const top = position === 'absolute' ? 3 : -10;
+    return (
+      '<div ' +
+      'class="ol-scale-step-marker" ' +
+      `style="position: ${position}; top: ${top}px;"` +
+      '></div>'
+    );
+  }
+
+  /**
+   * Creates the label for a marker marker at given position
+   * @param {number} i The iterator
+   * @param {number} width The width the scalebar will currently use
+   * @param {boolean} isLast Flag indicating if we add the last step text
+   * @param {number} scale The current scale for the whole scalebar
+   * @param {string} suffix The suffix for the scale
+   * @return {string} The stringified div containing the step text
+   */
+  createStepText(i, width, isLast, scale, suffix) {
+    const length =
+      i === 0 ? 0 : Math.round((scale / this.scaleBarSteps_) * i * 100) / 100;
+    const lengthString = length + (i === 0 ? '' : ' ' + suffix);
+    const margin = i === 0 ? -3 : (width / this.scaleBarSteps_) * -1;
+    const minWidth = i === 0 ? 0 : (width / this.scaleBarSteps_) * 2;
+    return (
+      '<div ' +
+      'class="ol-scale-step-text" ' +
+      'style="' +
+      `margin-left: ${margin}px;` +
+      `text-align: ${i === 0 ? 'left' : 'center'};` +
+      `min-width: ${minWidth}px;` +
+      `left: ${isLast ? width + 'px' : 'unset'};` +
+      '">' +
+      lengthString +
+      '</div>'
+    );
+  }
+
+  /**
+   * Returns the appropriate scale for the given resolution and units.
+   * @return {number} The appropriate scale.
+   */
+  getScaleForResolution() {
+    const resolution = (0,_proj_js__WEBPACK_IMPORTED_MODULE_0__.getPointResolution)(
+      this.viewState_.projection,
+      this.viewState_.resolution,
+      this.viewState_.center,
+      'm'
+    );
+    const dpi = this.dpi_ || DEFAULT_DPI;
+    const inchesPerMeter = 1000 / 25.4;
+    return resolution * inchesPerMeter * dpi;
+  }
+
+  /**
+   * Update the scale line element.
+   * @param {import("../MapEvent.js").default} mapEvent Map event.
+   * @override
+   */
+  render(mapEvent) {
+    const frameState = mapEvent.frameState;
+    if (!frameState) {
+      this.viewState_ = null;
+    } else {
+      this.viewState_ = frameState.viewState;
+    }
+    this.updateElement_();
+  }
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ScaleLine);
 
 
 /***/ }),

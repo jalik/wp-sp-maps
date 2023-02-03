@@ -3,7 +3,15 @@ import {
   Map,
   View,
 } from 'ol';
+import {
+  Attribution,
+  FullScreen,
+  Rotate,
+  ScaleLine,
+  Zoom,
+} from 'ol/control';
 import { Point } from 'ol/geom';
+import { defaults } from 'ol/interaction';
 import VectorLayer from 'ol/layer/Vector';
 import { Vector } from 'ol/source';
 import {
@@ -32,6 +40,17 @@ export function getZoomFromPost(post) {
 
 export function createMap(options = {}) {
   return new Map({
+    controls: [
+      new Attribution(),
+      new FullScreen(),
+      new Rotate(),
+      new ScaleLine(),
+      new Zoom(),
+    ],
+    interactions: defaults({
+      mouseWheelZoom: false,
+      onFocusOnly: true,
+    }),
     layers: [],
     view: new View({
       projection: 'EPSG:4326',
