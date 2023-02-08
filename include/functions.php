@@ -3,7 +3,7 @@
 function spmaps_enqueue_scripts($const = 'spmaps', $vars = array())
 {
   $plugin = plugin_basename(SPMAPS_PLUGIN_FILE);
-  $version = WP_DEBUG ? time() : '1.0.1';
+  $version = WP_DEBUG ? time() : SPMAPS_PLUGIN_VERSION;
   wp_register_script('spmaps-scripts', plugins_url('build/index.js', $plugin), array('wp-element'), $version, true);
   wp_enqueue_script('spmaps-scripts');
 
@@ -14,7 +14,7 @@ function spmaps_enqueue_scripts($const = 'spmaps', $vars = array())
 function spmaps_enqueue_styles()
 {
   $plugin = plugin_basename(SPMAPS_PLUGIN_FILE);
-  $version = WP_DEBUG ? time() : '1.0.1';
+  $version = WP_DEBUG ? time() : SPMAPS_PLUGIN_VERSION;
   wp_enqueue_style('spmaps-styles', plugins_url('styles.css', $plugin), array(), $version);
   wp_enqueue_style('spmaps-ol', plugins_url('build/index.css', $plugin), array(), $version);
 }

@@ -14,6 +14,7 @@ defined('ABSPATH') || die();
 
 define('SPMAPS_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('SPMAPS_PLUGIN_FILE', __FILE__);
+define('SPMAPS_PLUGIN_VERSION', '1.0.1');
 
 include_once 'include/functions.php';
 include_once 'include/metaboxes.php';
