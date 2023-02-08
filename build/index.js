@@ -382,7 +382,7 @@ function createHighlightLayer(features, options) {
   });
 }
 function createIcon(feature, resolution) {
-  const radius = 6;
+  const radius = 10;
   return new ol_style__WEBPACK_IMPORTED_MODULE_12__["default"]({
     fill: new ol_style__WEBPACK_IMPORTED_MODULE_13__["default"]({
       color: getIconColor(feature.getProperties())
@@ -446,7 +446,7 @@ function zoomToContent(layer, view) {
   const features = source.getFeatures();
   if (features.length > 1) {
     const opts = {
-      padding: [100, 100, 100, 100]
+      padding: [50, 50, 50, 50]
     };
     view.fit(source.getExtent(), opts);
     setTimeout(() => {

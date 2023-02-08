@@ -106,7 +106,7 @@ export function createHighlightLayer(features, options) {
 }
 
 export function createIcon(feature, resolution) {
-  const radius = 6;
+  const radius = 10;
   return new Circle({
     fill: new Fill({ color: getIconColor(feature.getProperties()) }),
     radius,
@@ -162,7 +162,7 @@ export function zoomToContent(layer, view) {
   const features = source.getFeatures();
 
   if (features.length > 1) {
-    const opts = { padding: [100, 100, 100, 100] };
+    const opts = { padding: [50, 50, 50, 50] };
     view.fit(source.getExtent(), opts);
     setTimeout(() => {
       view.fit(source.getExtent(), opts);
